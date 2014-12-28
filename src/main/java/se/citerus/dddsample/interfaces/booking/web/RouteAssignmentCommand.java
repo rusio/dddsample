@@ -10,9 +10,7 @@ import java.util.List;
 public class RouteAssignmentCommand {
 
   private String trackingId;
-  private List<LegCommand> legs = ListUtils.lazyList(
-    new ArrayList(), LegCommand.factory()
-  );
+  private List<LegCommand> legs = ListUtils.lazyList(new ArrayList(), LegCommand.factory());
 
   public String getTrackingId() {
     return trackingId;

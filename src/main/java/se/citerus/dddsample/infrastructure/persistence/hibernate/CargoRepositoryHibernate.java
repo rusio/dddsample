@@ -15,10 +15,9 @@ import java.util.UUID;
 public class CargoRepositoryHibernate extends HibernateRepository implements CargoRepository {
 
   public Cargo find(TrackingId tid) {
-    return (Cargo) getSession().
-      createQuery("from Cargo where trackingId = :tid").
-      setParameter("tid", tid).
-      uniqueResult();
+    return (Cargo) getSession().createQuery("from Cargo where trackingId = :tid")
+                               .setParameter("tid", tid)
+                               .uniqueResult();
   }
 
   public void store(Cargo cargo) {
@@ -30,9 +29,7 @@ public class CargoRepositoryHibernate extends HibernateRepository implements Car
   public TrackingId nextTrackingId() {
     // TODO use an actual DB sequence here, UUID is for in-mem
     final String random = UUID.randomUUID().toString().toUpperCase();
-    return new TrackingId(
-      random.substring(0, random.indexOf("-"))
-    );
+    return new TrackingId(random.substring(0, random.indexOf("-")));
   }
 
   public List<Cargo> findAll() {

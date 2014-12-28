@@ -1,10 +1,17 @@
 package se.citerus.dddsample.domain.model.cargo;
 
+import static se.citerus.dddsample.domain.model.cargo.RoutingStatus.MISROUTED;
+import static se.citerus.dddsample.domain.model.cargo.RoutingStatus.NOT_ROUTED;
+import static se.citerus.dddsample.domain.model.cargo.RoutingStatus.ROUTED;
+import static se.citerus.dddsample.domain.model.cargo.TransportStatus.CLAIMED;
+import static se.citerus.dddsample.domain.model.cargo.TransportStatus.IN_PORT;
+import static se.citerus.dddsample.domain.model.cargo.TransportStatus.NOT_RECEIVED;
+import static se.citerus.dddsample.domain.model.cargo.TransportStatus.ONBOARD_CARRIER;
+import static se.citerus.dddsample.domain.model.cargo.TransportStatus.UNKNOWN;
+
 import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
-import static se.citerus.dddsample.domain.model.cargo.RoutingStatus.*;
-import static se.citerus.dddsample.domain.model.cargo.TransportStatus.*;
 import se.citerus.dddsample.domain.model.handling.HandlingEvent;
 import se.citerus.dddsample.domain.model.handling.HandlingHistory;
 import se.citerus.dddsample.domain.model.location.Location;
@@ -60,7 +67,9 @@ public class Delivery implements ValueObject<Delivery> {
    * @param handlingHistory delivery history
    * @return An up to date delivery.
    */
-  static Delivery derivedFrom(RouteSpecification routeSpecification, Itinerary itinerary, HandlingHistory handlingHistory) {
+  static Delivery derivedFrom(RouteSpecification routeSpecification,
+                              Itinerary itinerary,
+                              HandlingHistory handlingHistory) {
     Validate.notNull(routeSpecification, "Route specification is required");
     Validate.notNull(handlingHistory, "Delivery history is required");
 
@@ -132,7 +141,8 @@ public class Delivery implements ValueObject<Delivery> {
   public Date estimatedTimeOfArrival() {
     if (eta != ETA_UNKOWN) {
       return new Date(eta.getTime());
-    } else {
+    }
+    else {
       return ETA_UNKOWN;
     }
   }
@@ -167,9 +177,7 @@ public class Delivery implements ValueObject<Delivery> {
 
   // TODO add currentCarrierMovement (?)
 
-
   // --- Internal calculations below ---
-
 
   private TransportStatus calculateTransportStatus() {
     if (lastEvent == null) {
@@ -193,7 +201,8 @@ public class Delivery implements ValueObject<Delivery> {
   private Location calculateLastKnownLocation() {
     if (lastEvent != null) {
       return lastEvent.location();
-    } else {
+    }
+    else {
       return null;
     }
   }
@@ -201,7 +210,8 @@ public class Delivery implements ValueObject<Delivery> {
   private Voyage calculateCurrentVoyage() {
     if (transportStatus().equals(ONBOARD_CARRIER) && lastEvent != null) {
       return lastEvent.voyage();
-    } else {
+    }
+    else {
       return null;
     }
   }
@@ -209,7 +219,8 @@ public class Delivery implements ValueObject<Delivery> {
   private boolean calculateMisdirectionStatus(Itinerary itinerary) {
     if (lastEvent == null) {
       return false;
-    } else {
+    }
+    else {
       return !itinerary.isExpected(lastEvent);
     }
   }
@@ -217,15 +228,18 @@ public class Delivery implements ValueObject<Delivery> {
   private Date calculateEta(Itinerary itinerary) {
     if (onTrack()) {
       return itinerary.finalArrivalDate();
-    } else {
+    }
+    else {
       return ETA_UNKOWN;
     }
   }
 
-  private HandlingActivity calculateNextExpectedActivity(RouteSpecification routeSpecification, Itinerary itinerary) {
+  private HandlingActivity calculateNextExpectedActivity(RouteSpecification routeSpecification,
+                                                         Itinerary itinerary) {
     if (!onTrack()) return NO_ACTIVITY;
 
-    if (lastEvent == null) return new HandlingActivity(HandlingEvent.Type.RECEIVE, routeSpecification.origin());
+    if (lastEvent == null)
+      return new HandlingActivity(HandlingEvent.Type.RECEIVE, routeSpecification.origin());
 
     switch (lastEvent.type()) {
 
@@ -245,7 +259,8 @@ public class Delivery implements ValueObject<Delivery> {
             if (it.hasNext()) {
               final Leg nextLeg = it.next();
               return new HandlingActivity(HandlingEvent.Type.LOAD, nextLeg.loadLocation(), nextLeg.voyage());
-            } else {
+            }
+            else {
               return new HandlingActivity(HandlingEvent.Type.CLAIM, leg.unloadLocation());
             }
           }
@@ -266,19 +281,20 @@ public class Delivery implements ValueObject<Delivery> {
   private RoutingStatus calculateRoutingStatus(Itinerary itinerary, RouteSpecification routeSpecification) {
     if (itinerary == null) {
       return NOT_ROUTED;
-    } else {
+    }
+    else {
       if (routeSpecification.isSatisfiedBy(itinerary)) {
         return ROUTED;
-      } else {
+      }
+      else {
         return MISROUTED;
       }
     }
   }
 
   private boolean calculateUnloadedAtDestination(RouteSpecification routeSpecification) {
-    return lastEvent != null &&
-      HandlingEvent.Type.UNLOAD.sameValueAs(lastEvent.type()) &&
-      routeSpecification.destination().sameIdentityAs(lastEvent.location());
+    return lastEvent != null && HandlingEvent.Type.UNLOAD.sameValueAs(lastEvent.type())
+           && routeSpecification.destination().sameIdentityAs(lastEvent.location());
   }
 
   private boolean onTrack() {
@@ -287,18 +303,18 @@ public class Delivery implements ValueObject<Delivery> {
 
   @Override
   public boolean sameValueAs(final Delivery other) {
-    return other != null && new EqualsBuilder().
-      append(this.transportStatus, other.transportStatus).
-      append(this.lastKnownLocation, other.lastKnownLocation).
-      append(this.currentVoyage, other.currentVoyage).
-      append(this.misdirected, other.misdirected).
-      append(this.eta, other.eta).
-      append(this.nextExpectedActivity, other.nextExpectedActivity).
-      append(this.isUnloadedAtDestination, other.isUnloadedAtDestination).
-      append(this.routingStatus, other.routingStatus).
-      append(this.calculatedAt, other.calculatedAt).
-      append(this.lastEvent, other.lastEvent).
-      isEquals();
+    return other != null
+           && new EqualsBuilder().append(this.transportStatus, other.transportStatus)
+                                 .append(this.lastKnownLocation, other.lastKnownLocation)
+                                 .append(this.currentVoyage, other.currentVoyage)
+                                 .append(this.misdirected, other.misdirected)
+                                 .append(this.eta, other.eta)
+                                 .append(this.nextExpectedActivity, other.nextExpectedActivity)
+                                 .append(this.isUnloadedAtDestination, other.isUnloadedAtDestination)
+                                 .append(this.routingStatus, other.routingStatus)
+                                 .append(this.calculatedAt, other.calculatedAt)
+                                 .append(this.lastEvent, other.lastEvent)
+                                 .isEquals();
   }
 
   @Override
@@ -313,18 +329,17 @@ public class Delivery implements ValueObject<Delivery> {
 
   @Override
   public int hashCode() {
-    return new HashCodeBuilder().
-      append(transportStatus).
-      append(lastKnownLocation).
-      append(currentVoyage).
-      append(misdirected).
-      append(eta).
-      append(nextExpectedActivity).
-      append(isUnloadedAtDestination).
-      append(routingStatus).
-      append(calculatedAt).
-      append(lastEvent).
-      toHashCode();
+    return new HashCodeBuilder().append(transportStatus)
+                                .append(lastKnownLocation)
+                                .append(currentVoyage)
+                                .append(misdirected)
+                                .append(eta)
+                                .append(nextExpectedActivity)
+                                .append(isUnloadedAtDestination)
+                                .append(routingStatus)
+                                .append(calculatedAt)
+                                .append(lastEvent)
+                                .toHashCode();
   }
 
   Delivery() {

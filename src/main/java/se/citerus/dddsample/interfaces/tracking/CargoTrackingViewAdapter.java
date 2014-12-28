@@ -9,7 +9,11 @@ import se.citerus.dddsample.domain.model.location.Location;
 import se.citerus.dddsample.domain.model.voyage.Voyage;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * View adapter for displaying a cargo in a tracking context.
@@ -30,7 +34,10 @@ public final class CargoTrackingViewAdapter {
    * @param locale
    * @param handlingEvents
    */
-  public CargoTrackingViewAdapter(Cargo cargo, MessageSource messageSource, Locale locale, List<HandlingEvent> handlingEvents) {
+  public CargoTrackingViewAdapter(Cargo cargo,
+                                  MessageSource messageSource,
+                                  Locale locale,
+                                  List<HandlingEvent> handlingEvents) {
     this.messageSource = messageSource;
     this.locale = locale;
     this.cargo = cargo;
@@ -66,10 +73,10 @@ public final class CargoTrackingViewAdapter {
     final Object[] args;
     switch (delivery.transportStatus()) {
       case IN_PORT:
-        args = new Object[] {getDisplayText(delivery.lastKnownLocation())};
+        args = new Object[]{ getDisplayText(delivery.lastKnownLocation()) };
         break;
       case ONBOARD_CARRIER:
-        args = new Object[] {delivery.currentVoyage().voyageNumber().idString()};
+        args = new Object[]{ delivery.currentVoyage().voyageNumber().idString() };
         break;
       case CLAIMED:
       case NOT_RECEIVED:
@@ -78,7 +85,7 @@ public final class CargoTrackingViewAdapter {
         args = null;
         break;
     }
-    
+
     return messageSource.getMessage(code, args, "[Unknown status]", locale);
   }
 
@@ -106,29 +113,31 @@ public final class CargoTrackingViewAdapter {
   public String getEta() {
     Date eta = cargo.delivery().estimatedTimeOfArrival();
 
-    if (eta == null) return "?";
-    else return new SimpleDateFormat(FORMAT).format(eta);
+    if (eta == null)
+      return "?";
+    else
+      return new SimpleDateFormat(FORMAT).format(eta);
   }
 
   public String getNextExpectedActivity() {
-      HandlingActivity activity = cargo.delivery().nextExpectedActivity();
-      if (activity == null) {
-        return "";
-      }
+    HandlingActivity activity = cargo.delivery().nextExpectedActivity();
+    if (activity == null) {
+      return "";
+    }
 
     String text = "Next expected activity is to ";
     HandlingEvent.Type type = activity.type();
     if (type.sameValueAs(HandlingEvent.Type.LOAD)) {
-        return
-          text + type.name().toLowerCase() + " cargo onto voyage " + activity.voyage().voyageNumber() +
-          " in " + activity.location().name();
-      } else if (type.sameValueAs(HandlingEvent.Type.UNLOAD)) {
-        return
-          text + type.name().toLowerCase() + " cargo off of " + activity.voyage().voyageNumber() +
-          " in " + activity.location().name();
-      } else {
-        return text + type.name().toLowerCase() + " cargo in " + activity.location().name();
-      }
+      return text + type.name().toLowerCase() + " cargo onto voyage " + activity.voyage().voyageNumber()
+             + " in " + activity.location().name();
+    }
+    else if (type.sameValueAs(HandlingEvent.Type.UNLOAD)) {
+      return text + type.name().toLowerCase() + " cargo off of " + activity.voyage().voyageNumber() + " in "
+             + activity.location().name();
+    }
+    else {
+      return text + type.name().toLowerCase() + " cargo in " + activity.location().name();
+    }
   }
 
   /**
@@ -196,30 +205,24 @@ public final class CargoTrackingViewAdapter {
       switch (handlingEvent.type()) {
         case LOAD:
         case UNLOAD:
-          args = new Object[] {
-            handlingEvent.voyage().voyageNumber().idString(),
-            handlingEvent.location().name(),
-            handlingEvent.completionTime()
-          };
+          args = new Object[]{ handlingEvent.voyage().voyageNumber().idString(),
+                              handlingEvent.location().name(), handlingEvent.completionTime() };
           break;
 
         case RECEIVE:
         case CLAIM:
-          args = new Object[] {
-            handlingEvent.location().name(),
-            handlingEvent.completionTime()
-          };
+          args = new Object[]{ handlingEvent.location().name(), handlingEvent.completionTime() };
           break;
 
         default:
-          args = new Object[] {};
+          args = new Object[]{};
       }
 
       String key = "deliveryHistory.eventDescription." + handlingEvent.type().name();
 
-      return messageSource.getMessage(key,args,locale);
+      return messageSource.getMessage(key, args, locale);
     }
 
   }
-  
+
 }

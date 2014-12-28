@@ -54,20 +54,16 @@ public class HandlingActivity implements ValueObject<HandlingActivity> {
 
   @Override
   public boolean sameValueAs(final HandlingActivity other) {
-    return other != null && new EqualsBuilder().
-      append(this.type, other.type).
-      append(this.location, other.location).
-      append(this.voyage, other.voyage).
-      isEquals();
+    return other != null
+           && new EqualsBuilder().append(this.type, other.type)
+                                 .append(this.location, other.location)
+                                 .append(this.voyage, other.voyage)
+                                 .isEquals();
   }
 
   @Override
   public int hashCode() {
-    return new HashCodeBuilder().
-      append(this.type).
-      append(this.location).
-      append(this.voyage).
-      toHashCode();
+    return new HashCodeBuilder().append(this.type).append(this.location).append(this.voyage).toHashCode();
   }
 
   @Override
@@ -84,5 +80,5 @@ public class HandlingActivity implements ValueObject<HandlingActivity> {
   HandlingActivity() {
     // Needed by Hibernate
   }
-  
+
 }

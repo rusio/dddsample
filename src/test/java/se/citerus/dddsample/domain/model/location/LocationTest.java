@@ -6,15 +6,15 @@ public class LocationTest extends TestCase {
 
   public void testEquals() {
     // Same UN locode - equal
-    assertTrue(new Location(new UnLocode("ATEST"),"test-name").
-        equals(new Location(new UnLocode("ATEST"),"test-name")));
+    assertTrue(new Location(new UnLocode("ATEST"), "test-name").equals(new Location(new UnLocode("ATEST"),
+                                                                                    "test-name")));
 
     // Different UN locodes - not equal
-    assertFalse(new Location(new UnLocode("ATEST"),"test-name").
-         equals(new Location(new UnLocode("TESTB"), "test-name")));
+    assertFalse(new Location(new UnLocode("ATEST"), "test-name").equals(new Location(new UnLocode("TESTB"),
+                                                                                     "test-name")));
 
     // Always equal to itself
-    Location location = new Location(new UnLocode("ATEST"),"test-name");
+    Location location = new Location(new UnLocode("ATEST"), "test-name");
     assertTrue(location.equals(location));
 
     // Never equal to null
@@ -26,7 +26,9 @@ public class LocationTest extends TestCase {
     try {
       new Location(null, null);
       fail("Should not allow any null constructor arguments");
-    } catch (IllegalArgumentException expected) {}
+    }
+    catch (IllegalArgumentException expected) {
+    }
   }
 
 }

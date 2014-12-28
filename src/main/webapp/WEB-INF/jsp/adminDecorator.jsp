@@ -11,24 +11,25 @@
   <decorator:head/>
 </head>
 <body>
-  <div id="outer">
-    <img id="logotype" src="<c:url value="/images/dddsample_logotype_small.png"/>" alt=""/>
-    <h1>Cargo Booking and Routing</h1>
-    <ul id="menu">
-      <li>
-        <a href="${rc.contextPath}/admin/list.html">
-          List all cargos
-        </a>
-      </li>
-      <li>
-        <a href="${rc.contextPath}/admin/registrationForm.html">
-          Book new cargo
-        </a>
-      </li>
-    </ul>
-    <div id="body">
-      <decorator:body/>
-    </div>
+<div id="outer">
+  <img id="logotype" src="<c:url value="/images/dddsample_logotype_small.png"/>" alt=""/>
+
+  <h1>Cargo Booking and Routing</h1>
+  <ul id="menu">
+    <li>
+      <a href="${rc.contextPath}/admin/list.html">
+        List all cargos
+      </a>
+    </li>
+    <li>
+      <a href="${rc.contextPath}/admin/registrationForm.html">
+        Book new cargo
+      </a>
+    </li>
+  </ul>
+  <div id="body">
+    <decorator:body/>
   </div>
+</div>
 </body>
 </html>

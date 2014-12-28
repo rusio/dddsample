@@ -1,15 +1,25 @@
 package se.citerus.dddsample.infrastructure.persistence.hibernate;
 
-import se.citerus.dddsample.application.util.SampleDataGenerator;
-import se.citerus.dddsample.domain.model.cargo.*;
-import se.citerus.dddsample.domain.model.handling.HandlingEvent;
 import static se.citerus.dddsample.domain.model.handling.HandlingEvent.Type.LOAD;
 import static se.citerus.dddsample.domain.model.handling.HandlingEvent.Type.RECEIVE;
+import static se.citerus.dddsample.domain.model.location.SampleLocations.HELSINKI;
+import static se.citerus.dddsample.domain.model.location.SampleLocations.HONGKONG;
+import static se.citerus.dddsample.domain.model.location.SampleLocations.MELBOURNE;
+import static se.citerus.dddsample.domain.model.location.SampleLocations.STOCKHOLM;
+import static se.citerus.dddsample.domain.model.location.SampleLocations.TOKYO;
+import static se.citerus.dddsample.domain.model.voyage.SampleVoyages.CM004;
+
+import se.citerus.dddsample.application.util.SampleDataGenerator;
+import se.citerus.dddsample.domain.model.cargo.Cargo;
+import se.citerus.dddsample.domain.model.cargo.CargoRepository;
+import se.citerus.dddsample.domain.model.cargo.Itinerary;
+import se.citerus.dddsample.domain.model.cargo.Leg;
+import se.citerus.dddsample.domain.model.cargo.RouteSpecification;
+import se.citerus.dddsample.domain.model.cargo.TrackingId;
+import se.citerus.dddsample.domain.model.handling.HandlingEvent;
 import se.citerus.dddsample.domain.model.location.Location;
 import se.citerus.dddsample.domain.model.location.LocationRepository;
-import static se.citerus.dddsample.domain.model.location.SampleLocations.*;
 import se.citerus.dddsample.domain.model.location.UnLocode;
-import static se.citerus.dddsample.domain.model.voyage.SampleVoyages.CM004;
 import se.citerus.dddsample.domain.model.voyage.Voyage;
 import se.citerus.dddsample.domain.model.voyage.VoyageNumber;
 import se.citerus.dddsample.domain.model.voyage.VoyageRepository;
@@ -46,7 +56,8 @@ public class CargoRepositoryTest extends AbstractRepositoryTest {
 
     assertNotNull(cargo.delivery());
 
-    final List<HandlingEvent> events = handlingEventRepository.lookupHandlingHistoryOfCargo(trackingId).distinctEventsByCompletionTime();
+    final List<HandlingEvent> events = handlingEventRepository.lookupHandlingHistoryOfCargo(trackingId)
+                                                              .distinctEventsByCompletionTime();
     assertEquals(2, events.size());
 
     HandlingEvent firstEvent = events.get(0);
@@ -54,13 +65,20 @@ public class CargoRepositoryTest extends AbstractRepositoryTest {
 
     HandlingEvent secondEvent = events.get(1);
 
-    Voyage hongkongMelbourneTokyoAndBack = new Voyage.Builder(
-      new VoyageNumber("0303"), HONGKONG).
-      addMovement(MELBOURNE, new Date(), new Date()).
-      addMovement(TOKYO, new Date(), new Date()).
-      addMovement(HONGKONG, new Date(), new Date()).
-      build();
-    
+    Voyage hongkongMelbourneTokyoAndBack = new Voyage.Builder(new VoyageNumber("0303"), HONGKONG).addMovement(
+        MELBOURNE,
+        new Date(),
+        new Date())
+                                                                                                 .addMovement(
+                                                                                                     TOKYO,
+                                                                                                     new Date(),
+                                                                                                     new Date())
+                                                                                                 .addMovement(
+                                                                                                     HONGKONG,
+                                                                                                     new Date(),
+                                                                                                     new Date())
+                                                                                                 .build();
+
     assertHandlingEvent(cargo, secondEvent, LOAD, HONGKONG, 150, 110, hongkongMelbourneTokyoAndBack);
 
     List<Leg> legs = cargo.itinerary().legs();
@@ -76,7 +94,13 @@ public class CargoRepositoryTest extends AbstractRepositoryTest {
     assertLeg(thirdLeg, "0101", STOCKHOLM, HELSINKI);
   }
 
-  private void assertHandlingEvent(Cargo cargo, HandlingEvent event, HandlingEvent.Type expectedEventType, Location expectedLocation, int completionTimeMs, int registrationTimeMs, Voyage voyage) {
+  private void assertHandlingEvent(Cargo cargo,
+                                   HandlingEvent event,
+                                   HandlingEvent.Type expectedEventType,
+                                   Location expectedLocation,
+                                   int completionTimeMs,
+                                   int registrationTimeMs,
+                                   Voyage voyage) {
     assertEquals(expectedEventType, event.type());
     assertEquals(expectedLocation, event.location());
 
@@ -108,18 +132,16 @@ public class CargoRepositoryTest extends AbstractRepositoryTest {
     Cargo cargo = new Cargo(trackingId, new RouteSpecification(origin, destination, new Date()));
     cargoRepository.store(cargo);
 
-    cargo.assignToRoute(new Itinerary(Arrays.asList(
-      new Leg(
-        voyageRepository.find(new VoyageNumber("0101")),
-        locationRepository.find(STOCKHOLM.unLocode()),
-        locationRepository.find(MELBOURNE.unLocode()),
-        new Date(), new Date())
-    )));
-    
+    cargo.assignToRoute(new Itinerary(Arrays.asList(new Leg(voyageRepository.find(new VoyageNumber("0101")),
+                                                            locationRepository.find(STOCKHOLM.unLocode()),
+                                                            locationRepository.find(MELBOURNE.unLocode()),
+                                                            new Date(),
+                                                            new Date()))));
+
     flush();
 
-    Map<String, Object> map = sjt.queryForMap(
-      "select * from Cargo where tracking_id = ?", trackingId.idString());
+    Map<String, Object> map = sjt.queryForMap("select * from Cargo where tracking_id = ?",
+                                              trackingId.idString());
 
     assertEquals("AAA", map.get("TRACKING_ID"));
 
@@ -142,7 +164,11 @@ public class CargoRepositoryTest extends AbstractRepositoryTest {
 
     Location legFrom = locationRepository.find(new UnLocode("FIHEL"));
     Location legTo = locationRepository.find(new UnLocode("DEHAM"));
-    Itinerary newItinerary = new Itinerary(Arrays.asList(new Leg(CM004, legFrom, legTo, new Date(), new Date())));
+    Itinerary newItinerary = new Itinerary(Arrays.asList(new Leg(CM004,
+                                                                 legFrom,
+                                                                 legTo,
+                                                                 new Date(),
+                                                                 new Date())));
 
     cargo.assignToRoute(newItinerary);
 
@@ -151,7 +177,6 @@ public class CargoRepositoryTest extends AbstractRepositoryTest {
 
     assertEquals(1, sjt.queryForInt("select count(*) from Leg where cargo_id = ?", cargoId));
   }
-
 
   public void testFindAll() {
     List<Cargo> all = cargoRepository.findAll();

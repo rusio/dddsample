@@ -4,7 +4,12 @@ import com.pathfinder.api.GraphTraversalService;
 import com.pathfinder.api.TransitEdge;
 import com.pathfinder.api.TransitPath;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.Properties;
+import java.util.Random;
 
 public class GraphTraversalServiceImpl implements GraphTraversalService {
 
@@ -39,9 +44,11 @@ public class GraphTraversalServiceImpl implements GraphTraversalService {
       Date toDate = nextDate(fromDate);
       date = nextDate(toDate);
 
-      transitEdges.add(new TransitEdge(
-        dao.getVoyageNumber(originUnLocode, firstLegTo),
-        originUnLocode, firstLegTo, fromDate, toDate));
+      transitEdges.add(new TransitEdge(dao.getVoyageNumber(originUnLocode, firstLegTo),
+                                       originUnLocode,
+                                       firstLegTo,
+                                       fromDate,
+                                       toDate));
 
       for (int j = 0; j < allVertices.size() - 1; j++) {
         final String curr = allVertices.get(j);
@@ -55,9 +62,11 @@ public class GraphTraversalServiceImpl implements GraphTraversalService {
       final String lastLegFrom = allVertices.get(allVertices.size() - 1);
       fromDate = nextDate(date);
       toDate = nextDate(fromDate);
-      transitEdges.add(new TransitEdge(
-        dao.getVoyageNumber(lastLegFrom, destinationUnLocode),
-        lastLegFrom, destinationUnLocode, fromDate, toDate));
+      transitEdges.add(new TransitEdge(dao.getVoyageNumber(lastLegFrom, destinationUnLocode),
+                                       lastLegFrom,
+                                       destinationUnLocode,
+                                       fromDate,
+                                       toDate));
 
       candidates.add(new TransitPath(transitEdges));
     }

@@ -1,10 +1,18 @@
 package se.citerus.dddsample.interfaces.booking.facade.internal.assembler;
 
-import junit.framework.TestCase;
-import se.citerus.dddsample.domain.model.cargo.*;
-import se.citerus.dddsample.domain.model.location.Location;
-import static se.citerus.dddsample.domain.model.location.SampleLocations.*;
+import static se.citerus.dddsample.domain.model.location.SampleLocations.MELBOURNE;
+import static se.citerus.dddsample.domain.model.location.SampleLocations.ROTTERDAM;
+import static se.citerus.dddsample.domain.model.location.SampleLocations.SHANGHAI;
+import static se.citerus.dddsample.domain.model.location.SampleLocations.STOCKHOLM;
 import static se.citerus.dddsample.domain.model.voyage.SampleVoyages.CM001;
+
+import junit.framework.TestCase;
+import se.citerus.dddsample.domain.model.cargo.Cargo;
+import se.citerus.dddsample.domain.model.cargo.Itinerary;
+import se.citerus.dddsample.domain.model.cargo.Leg;
+import se.citerus.dddsample.domain.model.cargo.RouteSpecification;
+import se.citerus.dddsample.domain.model.cargo.TrackingId;
+import se.citerus.dddsample.domain.model.location.Location;
 import se.citerus.dddsample.interfaces.booking.facade.dto.CargoRoutingDTO;
 import se.citerus.dddsample.interfaces.booking.facade.dto.LegDTO;
 
@@ -18,14 +26,19 @@ public class CargoRoutingDTOAssemblerTest extends TestCase {
 
     final Location origin = STOCKHOLM;
     final Location destination = MELBOURNE;
-    final Cargo cargo = new Cargo(new TrackingId("XYZ"), new RouteSpecification(origin, destination, new Date()));
+    final Cargo cargo = new Cargo(new TrackingId("XYZ"), new RouteSpecification(origin,
+                                                                                destination,
+                                                                                new Date()));
 
-    final Itinerary itinerary = new Itinerary(
-      Arrays.asList(
-        new Leg(CM001, origin, SHANGHAI, new Date(), new Date()),
-        new Leg(CM001, ROTTERDAM, destination, new Date(), new Date())
-      )
-    );
+    final Itinerary itinerary = new Itinerary(Arrays.asList(new Leg(CM001,
+                                                                    origin,
+                                                                    SHANGHAI,
+                                                                    new Date(),
+                                                                    new Date()), new Leg(CM001,
+                                                                                         ROTTERDAM,
+                                                                                         destination,
+                                                                                         new Date(),
+                                                                                         new Date())));
 
     cargo.assignToRoute(itinerary);
 
@@ -47,7 +60,9 @@ public class CargoRoutingDTOAssemblerTest extends TestCase {
   public void testToDTO_NoItinerary() throws Exception {
     final CargoRoutingDTOAssembler assembler = new CargoRoutingDTOAssembler();
 
-    final Cargo cargo = new Cargo(new TrackingId("XYZ"), new RouteSpecification(STOCKHOLM, MELBOURNE, new Date()));
+    final Cargo cargo = new Cargo(new TrackingId("XYZ"), new RouteSpecification(STOCKHOLM,
+                                                                                MELBOURNE,
+                                                                                new Date()));
     final CargoRoutingDTO dto = assembler.toDTO(cargo);
 
     assertEquals("XYZ", dto.getTrackingId());

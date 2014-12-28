@@ -4,7 +4,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.transaction.annotation.Transactional;
 import se.citerus.dddsample.application.BookingService;
-import se.citerus.dddsample.domain.model.cargo.*;
+import se.citerus.dddsample.domain.model.cargo.Cargo;
+import se.citerus.dddsample.domain.model.cargo.CargoRepository;
+import se.citerus.dddsample.domain.model.cargo.Itinerary;
+import se.citerus.dddsample.domain.model.cargo.RouteSpecification;
+import se.citerus.dddsample.domain.model.cargo.TrackingId;
 import se.citerus.dddsample.domain.model.location.Location;
 import se.citerus.dddsample.domain.model.location.LocationRepository;
 import se.citerus.dddsample.domain.model.location.UnLocode;
@@ -80,9 +84,10 @@ public final class BookingServiceImpl implements BookingService {
     final Cargo cargo = cargoRepository.find(trackingId);
     final Location newDestination = locationRepository.find(unLocode);
 
-    final RouteSpecification routeSpecification = new RouteSpecification(
-      cargo.origin(), newDestination, cargo.routeSpecification().arrivalDeadline()
-    );
+    final RouteSpecification routeSpecification = new RouteSpecification(cargo.origin(),
+                                                                         newDestination,
+                                                                         cargo.routeSpecification()
+                                                                              .arrivalDeadline());
     cargo.specifyNewRoute(routeSpecification);
 
     cargoRepository.store(cargo);

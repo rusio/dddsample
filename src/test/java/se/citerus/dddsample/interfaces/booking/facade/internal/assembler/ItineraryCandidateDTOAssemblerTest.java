@@ -1,14 +1,23 @@
 package se.citerus.dddsample.interfaces.booking.facade.internal.assembler;
 
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static se.citerus.dddsample.domain.model.location.SampleLocations.CHICAGO;
+import static se.citerus.dddsample.domain.model.location.SampleLocations.HONGKONG;
+import static se.citerus.dddsample.domain.model.location.SampleLocations.MELBOURNE;
+import static se.citerus.dddsample.domain.model.location.SampleLocations.ROTTERDAM;
+import static se.citerus.dddsample.domain.model.location.SampleLocations.SHANGHAI;
+import static se.citerus.dddsample.domain.model.location.SampleLocations.STOCKHOLM;
+import static se.citerus.dddsample.domain.model.location.SampleLocations.TOKYO;
+import static se.citerus.dddsample.domain.model.voyage.SampleVoyages.CM001;
+
 import junit.framework.TestCase;
-import static org.easymock.EasyMock.*;
 import se.citerus.dddsample.domain.model.cargo.Itinerary;
 import se.citerus.dddsample.domain.model.cargo.Leg;
 import se.citerus.dddsample.domain.model.location.Location;
 import se.citerus.dddsample.domain.model.location.LocationRepository;
-import static se.citerus.dddsample.domain.model.location.SampleLocations.*;
 import se.citerus.dddsample.domain.model.location.UnLocode;
-import static se.citerus.dddsample.domain.model.voyage.SampleVoyages.CM001;
 import se.citerus.dddsample.domain.model.voyage.VoyageRepository;
 import se.citerus.dddsample.infrastructure.persistence.inmemory.VoyageRepositoryInMem;
 import se.citerus.dddsample.interfaces.booking.facade.dto.LegDTO;
@@ -27,12 +36,15 @@ public class ItineraryCandidateDTOAssemblerTest extends TestCase {
     final Location origin = STOCKHOLM;
     final Location destination = MELBOURNE;
 
-    final Itinerary itinerary = new Itinerary(
-      Arrays.asList(
-        new Leg(CM001, origin, SHANGHAI, new Date(), new Date()),
-        new Leg(CM001, ROTTERDAM, destination, new Date(), new Date())
-      )
-    );
+    final Itinerary itinerary = new Itinerary(Arrays.asList(new Leg(CM001,
+                                                                    origin,
+                                                                    SHANGHAI,
+                                                                    new Date(),
+                                                                    new Date()), new Leg(CM001,
+                                                                                         ROTTERDAM,
+                                                                                         destination,
+                                                                                         new Date(),
+                                                                                         new Date())));
 
     final RouteCandidateDTO dto = assembler.toDTO(itinerary);
 
@@ -64,11 +76,11 @@ public class ItineraryCandidateDTOAssemblerTest extends TestCase {
 
     replay(locationRepository);
 
-
     // Tested call
-    final Itinerary itinerary = assembler.fromDTO(new RouteCandidateDTO(legs), voyageRepository, locationRepository);
+    final Itinerary itinerary = assembler.fromDTO(new RouteCandidateDTO(legs),
+                                                  voyageRepository,
+                                                  locationRepository);
 
-    
     assertNotNull(itinerary);
     assertNotNull(itinerary.legs());
     assertEquals(2, itinerary.legs().size());

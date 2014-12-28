@@ -17,9 +17,7 @@ public class Voyage implements Entity<Voyage> {
   private Schedule schedule;
 
   // Null object pattern
-  public static final Voyage NONE = new Voyage(
-    new VoyageNumber(""), Schedule.EMPTY
-  );
+  public static final Voyage NONE = new Voyage(new VoyageNumber(""), Schedule.EMPTY);
 
   public Voyage(final VoyageNumber voyageNumber, final Schedule schedule) {
     Validate.notNull(voyageNumber, "Voyage number is required");

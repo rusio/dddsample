@@ -4,7 +4,7 @@ package se.citerus.dddsample.domain.shared.experimental;
  * An entity, as explained in the DDD book.
  *
  */
-public interface Entity<T,ID> {
+public interface Entity<T, ID> {
 
   /**
    * Entities compare by identity, not by attributes.

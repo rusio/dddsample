@@ -1,14 +1,27 @@
 package se.citerus.dddsample.infrastructure.routing;
 
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.isA;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
+import static se.citerus.dddsample.domain.model.location.SampleLocations.GOTHENBURG;
+import static se.citerus.dddsample.domain.model.location.SampleLocations.HELSINKI;
+import static se.citerus.dddsample.domain.model.location.SampleLocations.HONGKONG;
+import static se.citerus.dddsample.domain.model.location.SampleLocations.STOCKHOLM;
+import static se.citerus.dddsample.domain.model.location.SampleLocations.TOKYO;
+
 import com.pathfinder.api.GraphTraversalService;
 import com.pathfinder.internal.GraphDAO;
 import com.pathfinder.internal.GraphTraversalServiceImpl;
 import junit.framework.TestCase;
-import static org.easymock.EasyMock.*;
-import se.citerus.dddsample.domain.model.cargo.*;
+import se.citerus.dddsample.domain.model.cargo.Cargo;
+import se.citerus.dddsample.domain.model.cargo.Itinerary;
+import se.citerus.dddsample.domain.model.cargo.Leg;
+import se.citerus.dddsample.domain.model.cargo.RouteSpecification;
+import se.citerus.dddsample.domain.model.cargo.TrackingId;
 import se.citerus.dddsample.domain.model.location.Location;
 import se.citerus.dddsample.domain.model.location.LocationRepository;
-import static se.citerus.dddsample.domain.model.location.SampleLocations.*;
 import se.citerus.dddsample.domain.model.voyage.SampleVoyages;
 import se.citerus.dddsample.domain.model.voyage.VoyageNumber;
 import se.citerus.dddsample.domain.model.voyage.VoyageRepository;
@@ -33,7 +46,9 @@ public class ExternalRoutingServiceTest extends TestCase {
 
     GraphTraversalService graphTraversalService = new GraphTraversalServiceImpl(new GraphDAO() {
       public List<String> listLocations() {
-        return Arrays.asList(TOKYO.unLocode().idString(), STOCKHOLM.unLocode().idString(), GOTHENBURG.unLocode().idString());
+        return Arrays.asList(TOKYO.unLocode().idString(),
+                             STOCKHOLM.unLocode().idString(),
+                             GOTHENBURG.unLocode().idString());
       }
 
       public void storeCarrierMovementId(String cmId, String from, String to) {
@@ -50,7 +65,7 @@ public class ExternalRoutingServiceTest extends TestCase {
     Cargo cargo = new Cargo(trackingId, routeSpecification);
 
     expect(voyageRepository.find(isA(VoyageNumber.class))).andStubReturn(SampleVoyages.CM002);
-    
+
     replay(voyageRepository);
 
     List<Itinerary> candidates = externalRoutingService.fetchRoutesForSpecification(routeSpecification);

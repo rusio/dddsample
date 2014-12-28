@@ -8,7 +8,6 @@ import se.citerus.dddsample.domain.shared.ValueObject;
 
 import java.util.Date;
 
-
 /**
  * A carrier movement is a vessel voyage from one location to another.
  */
@@ -20,10 +19,10 @@ public final class CarrierMovement implements ValueObject<CarrierMovement> {
   private Date arrivalTime;
 
   // Null object pattern 
-  public static final CarrierMovement NONE = new CarrierMovement(
-    Location.UNKNOWN, Location.UNKNOWN,
-    new Date(0), new Date(0)
-  );
+  public static final CarrierMovement NONE = new CarrierMovement(Location.UNKNOWN,
+                                                                 Location.UNKNOWN,
+                                                                 new Date(0),
+                                                                 new Date(0));
 
   /**
    * Constructor.
@@ -38,7 +37,7 @@ public final class CarrierMovement implements ValueObject<CarrierMovement> {
                          Location arrivalLocation,
                          Date departureTime,
                          Date arrivalTime) {
-    Validate.noNullElements(new Object[]{departureLocation, arrivalLocation, departureTime, arrivalTime});
+    Validate.noNullElements(new Object[]{ departureLocation, arrivalLocation, departureTime, arrivalTime });
     this.departureTime = departureTime;
     this.arrivalTime = arrivalTime;
     this.departureLocation = departureLocation;
@@ -85,22 +84,21 @@ public final class CarrierMovement implements ValueObject<CarrierMovement> {
 
   @Override
   public int hashCode() {
-    return new HashCodeBuilder().
-      append(this.departureLocation).
-      append(this.departureTime).
-      append(this.arrivalLocation).
-      append(this.arrivalTime).
-      toHashCode();
+    return new HashCodeBuilder().append(this.departureLocation)
+                                .append(this.departureTime)
+                                .append(this.arrivalLocation)
+                                .append(this.arrivalTime)
+                                .toHashCode();
   }
 
   @Override
   public boolean sameValueAs(CarrierMovement other) {
-    return other != null && new EqualsBuilder().
-      append(this.departureLocation, other.departureLocation).
-      append(this.departureTime, other.departureTime).
-      append(this.arrivalLocation, other.arrivalLocation).
-      append(this.arrivalTime, other.arrivalTime).
-      isEquals();
+    return other != null
+           && new EqualsBuilder().append(this.departureLocation, other.departureLocation)
+                                 .append(this.departureTime, other.departureTime)
+                                 .append(this.arrivalLocation, other.arrivalLocation)
+                                 .append(this.arrivalTime, other.arrivalTime)
+                                 .isEquals();
   }
 
   CarrierMovement() {

@@ -14,7 +14,6 @@ public interface HandlingEventRepository {
    */
   void store(HandlingEvent event);
 
-
   /**
    * @param trackingId cargo tracking id
    * @return The handling history of this cargo

@@ -33,7 +33,8 @@
 
   <tx:annotation-driven transaction-manager="transactionManager"/>
 
-  <bean id="cargoRepository" class="se.citerus.dddsample.infrastructure.persistence.hibernate.CargoRepositoryHibernate">
+  <bean id="cargoRepository"
+        class="se.citerus.dddsample.infrastructure.persistence.hibernate.CargoRepositoryHibernate">
     <property name="sessionFactory" ref="sessionFactory"/>
   </bean>
 

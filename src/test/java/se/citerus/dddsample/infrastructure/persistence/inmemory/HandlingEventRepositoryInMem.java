@@ -5,7 +5,11 @@ import se.citerus.dddsample.domain.model.handling.HandlingEvent;
 import se.citerus.dddsample.domain.model.handling.HandlingEventRepository;
 import se.citerus.dddsample.domain.model.handling.HandlingHistory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class HandlingEventRepositoryInMem implements HandlingEventRepository {
 
@@ -26,7 +30,7 @@ public class HandlingEventRepositoryInMem implements HandlingEventRepository {
   public HandlingHistory lookupHandlingHistoryOfCargo(TrackingId trackingId) {
     List<HandlingEvent> events = eventMap.get(trackingId);
     if (events == null) events = Collections.emptyList();
-    
+
     return new HandlingHistory(events);
   }
 

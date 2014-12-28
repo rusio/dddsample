@@ -1,8 +1,15 @@
 package se.citerus.dddsample.domain.model.cargo;
 
+import static se.citerus.dddsample.domain.model.location.SampleLocations.GOTHENBURG;
+import static se.citerus.dddsample.domain.model.location.SampleLocations.HANGZOU;
+import static se.citerus.dddsample.domain.model.location.SampleLocations.HELSINKI;
+import static se.citerus.dddsample.domain.model.location.SampleLocations.NEWYORK;
+import static se.citerus.dddsample.domain.model.location.SampleLocations.ROTTERDAM;
+import static se.citerus.dddsample.domain.model.location.SampleLocations.SHANGHAI;
+import static se.citerus.dddsample.domain.model.location.SampleLocations.STOCKHOLM;
+
 import junit.framework.TestCase;
 import se.citerus.dddsample.domain.model.handling.HandlingEvent;
-import static se.citerus.dddsample.domain.model.location.SampleLocations.*;
 import se.citerus.dddsample.domain.model.voyage.CarrierMovement;
 import se.citerus.dddsample.domain.model.voyage.Voyage;
 import se.citerus.dddsample.domain.model.voyage.VoyageNumber;
@@ -21,15 +28,21 @@ public class ItineraryTest extends TestCase {
   Voyage voyage, wrongVoyage;
 
   protected void setUp() throws Exception {
-    voyage = new Voyage.Builder(new VoyageNumber("0123"), SHANGHAI).
-      addMovement(ROTTERDAM, new Date(), new Date()).
-      addMovement(GOTHENBURG, new Date(), new Date()).
-      build();
+    voyage = new Voyage.Builder(new VoyageNumber("0123"), SHANGHAI).addMovement(ROTTERDAM,
+                                                                                new Date(),
+                                                                                new Date())
+                                                                   .addMovement(GOTHENBURG,
+                                                                                new Date(),
+                                                                                new Date())
+                                                                   .build();
 
-    wrongVoyage = new Voyage.Builder(new VoyageNumber("666"), NEWYORK).
-      addMovement(STOCKHOLM, new Date(), new Date()).
-      addMovement(HELSINKI, new Date(), new Date()).
-      build();
+    wrongVoyage = new Voyage.Builder(new VoyageNumber("666"), NEWYORK).addMovement(STOCKHOLM,
+                                                                                   new Date(),
+                                                                                   new Date())
+                                                                      .addMovement(HELSINKI,
+                                                                                   new Date(),
+                                                                                   new Date())
+                                                                      .build();
   }
 
   public void testCargoOnTrack() throws Exception {
@@ -38,15 +51,22 @@ public class ItineraryTest extends TestCase {
     RouteSpecification routeSpecification = new RouteSpecification(SHANGHAI, GOTHENBURG, new Date());
     Cargo cargo = new Cargo(trackingId, routeSpecification);
 
-    Itinerary itinerary = new Itinerary(
-      Arrays.asList(
-        new Leg(voyage, SHANGHAI, ROTTERDAM, new Date(), new Date()),
-        new Leg(voyage, ROTTERDAM, GOTHENBURG, new Date(), new Date())
-      )
-    );
+    Itinerary itinerary = new Itinerary(Arrays.asList(new Leg(voyage,
+                                                              SHANGHAI,
+                                                              ROTTERDAM,
+                                                              new Date(),
+                                                              new Date()), new Leg(voyage,
+                                                                                   ROTTERDAM,
+                                                                                   GOTHENBURG,
+                                                                                   new Date(),
+                                                                                   new Date())));
 
     //Happy path
-    HandlingEvent event = new HandlingEvent(cargo, new Date(), new Date(), HandlingEvent.Type.RECEIVE, SHANGHAI);
+    HandlingEvent event = new HandlingEvent(cargo,
+                                            new Date(),
+                                            new Date(),
+                                            HandlingEvent.Type.RECEIVE,
+                                            SHANGHAI);
     assertTrue(itinerary.isExpected(event));
 
     event = new HandlingEvent(cargo, new Date(), new Date(), HandlingEvent.Type.LOAD, SHANGHAI, voyage);
@@ -93,7 +113,8 @@ public class ItineraryTest extends TestCase {
     try {
       new Itinerary(new ArrayList<Leg>());
       fail("An empty itinerary is not OK");
-    } catch (IllegalArgumentException iae) {
+    }
+    catch (IllegalArgumentException iae) {
       //Expected
     }
 
@@ -101,7 +122,8 @@ public class ItineraryTest extends TestCase {
       List<Leg> legs = null;
       new Itinerary(legs);
       fail("Null itinerary is not OK");
-    } catch (IllegalArgumentException iae) {
+    }
+    catch (IllegalArgumentException iae) {
       //Expected
     }
   }

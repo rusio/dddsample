@@ -18,9 +18,7 @@ public final class Location implements Entity<Location> {
   /**
    * Special Location object that marks an unknown location.
    */
-  public static final Location UNKNOWN = new Location(
-    new UnLocode("XXXXX"), "Unknown location"
-  );
+  public static final Location UNKNOWN = new Location(new UnLocode("XXXXX"), "Unknown location");
 
   /**
    * Package-level constructor, visible for test only.
@@ -32,7 +30,7 @@ public final class Location implements Entity<Location> {
   Location(final UnLocode unLocode, final String name) {
     Validate.notNull(unLocode);
     Validate.notNull(name);
-    
+
     this.unLocode = unLocode;
     this.name = name;
   }

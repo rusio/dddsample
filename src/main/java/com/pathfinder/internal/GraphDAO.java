@@ -10,9 +10,19 @@ public class GraphDAO {
   private static final Random random = new Random();
 
   public List<String> listLocations() {
-    return new ArrayList<String>(Arrays.asList(
-      "CNHKG", "AUMEL", "SESTO", "FIHEL", "USCHI", "JNTKO", "DEHAM", "CNSHA", "NLRTM", "SEGOT", "CNHGH", "USNYC", "USDAL"
-    ));
+    return new ArrayList<String>(Arrays.asList("CNHKG",
+                                               "AUMEL",
+                                               "SESTO",
+                                               "FIHEL",
+                                               "USCHI",
+                                               "JNTKO",
+                                               "DEHAM",
+                                               "CNSHA",
+                                               "NLRTM",
+                                               "SEGOT",
+                                               "CNHGH",
+                                               "USNYC",
+                                               "USDAL"));
   }
 
   public String getVoyageNumber(String from, String to) {
@@ -23,5 +33,5 @@ public class GraphDAO {
     if (i == 3) return "0301S";
     return "0400S";
   }
-  
+
 }

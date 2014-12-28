@@ -27,7 +27,8 @@ public class HandlingReportParser {
   public static UnLocode parseUnLocode(final String unlocode, final List<String> errors) {
     try {
       return new UnLocode(unlocode);
-    } catch (IllegalArgumentException e) {
+    }
+    catch (IllegalArgumentException e) {
       errors.add(e.getMessage());
       return null;
     }
@@ -36,7 +37,8 @@ public class HandlingReportParser {
   public static TrackingId parseTrackingId(final String trackingId, final List<String> errors) {
     try {
       return new TrackingId(trackingId);
-    } catch (IllegalArgumentException e) {
+    }
+    catch (IllegalArgumentException e) {
       errors.add(e.getMessage());
       return null;
     }
@@ -46,11 +48,13 @@ public class HandlingReportParser {
     if (StringUtils.isNotEmpty(voyageNumber)) {
       try {
         return new VoyageNumber(voyageNumber);
-      } catch (IllegalArgumentException e) {
+      }
+      catch (IllegalArgumentException e) {
         errors.add(e.getMessage());
         return null;
       }
-    } else {
+    }
+    else {
       return null;
     }
   }
@@ -59,8 +63,10 @@ public class HandlingReportParser {
     Date date;
     try {
       date = new SimpleDateFormat(ISO_8601_FORMAT).parse(completionTime);
-    } catch (ParseException e) {
-      errors.add("Invalid date format: " + completionTime + ", must be on ISO 8601 format: " + ISO_8601_FORMAT);
+    }
+    catch (ParseException e) {
+      errors.add("Invalid date format: " + completionTime + ", must be on ISO 8601 format: "
+                 + ISO_8601_FORMAT);
       date = null;
     }
     return date;
@@ -69,8 +75,10 @@ public class HandlingReportParser {
   public static HandlingEvent.Type parseEventType(final String eventType, final List<String> errors) {
     try {
       return HandlingEvent.Type.valueOf(eventType);
-    } catch (IllegalArgumentException e) {
-      errors.add(eventType + " is not a valid handling event type. Valid types are: " + Arrays.toString(HandlingEvent.Type.values()));
+    }
+    catch (IllegalArgumentException e) {
+      errors.add(eventType + " is not a valid handling event type. Valid types are: "
+                 + Arrays.toString(HandlingEvent.Type.values()));
       return null;
     }
   }

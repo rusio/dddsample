@@ -37,13 +37,17 @@ public class HandlingEventRepositoryTest extends AbstractRepositoryTest {
     Cargo cargo = cargoRepository.find(new TrackingId("XYZ"));
     Date completionTime = new Date(10);
     Date registrationTime = new Date(20);
-    HandlingEvent event = new HandlingEvent(cargo, completionTime, registrationTime, HandlingEvent.Type.CLAIM, location);
+    HandlingEvent event = new HandlingEvent(cargo,
+                                            completionTime,
+                                            registrationTime,
+                                            HandlingEvent.Type.CLAIM,
+                                            location);
 
     handlingEventRepository.store(event);
 
     flush();
 
-    Map<String,Object> result = sjt.queryForMap("select * from HandlingEvent where id = ?", getLongId(event));
+    Map<String, Object> result = sjt.queryForMap("select * from HandlingEvent where id = ?", getLongId(event));
     assertEquals(1L, result.get("CARGO_ID"));
     assertEquals(new Date(10), result.get("COMPLETIONTIME"));
     assertEquals(new Date(20), result.get("REGISTRATIONTIME"));
@@ -53,7 +57,8 @@ public class HandlingEventRepositoryTest extends AbstractRepositoryTest {
 
   public void testFindEventsForCargo() throws Exception {
     TrackingId trackingId = new TrackingId("XYZ");
-    List<HandlingEvent> handlingEvents = handlingEventRepository.lookupHandlingHistoryOfCargo(trackingId).distinctEventsByCompletionTime();
+    List<HandlingEvent> handlingEvents = handlingEventRepository.lookupHandlingHistoryOfCargo(trackingId)
+                                                                .distinctEventsByCompletionTime();
     assertEquals(12, handlingEvents.size());
   }
 

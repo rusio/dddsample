@@ -27,7 +27,11 @@ public final class CargoRoutingDTO implements Serializable {
    * @param arrivalDeadline
    * @param misrouted
    */
-  public CargoRoutingDTO(String trackingId, String origin, String finalDestination, Date arrivalDeadline, boolean misrouted) {
+  public CargoRoutingDTO(String trackingId,
+                         String origin,
+                         String finalDestination,
+                         Date arrivalDeadline,
+                         boolean misrouted) {
     this.trackingId = trackingId;
     this.origin = origin;
     this.finalDestination = finalDestination;

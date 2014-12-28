@@ -38,16 +38,22 @@ public final class HandlingEventServiceImpl implements HandlingEventService {
                                     final UnLocode unLocode,
                                     final HandlingEvent.Type type) throws CannotCreateHandlingEventException {
     final Date registrationTime = new Date();
-    /* Using a factory to create a HandlingEvent (aggregate). This is where
-       it is determined wether the incoming data, the attempt, actually is capable
-       of representing a real handling event. */
-    final HandlingEvent event = handlingEventFactory.createHandlingEvent(
-      registrationTime, completionTime, trackingId, voyageNumber, unLocode, type
-    );
+    /*
+     * Using a factory to create a HandlingEvent (aggregate). This is where it
+     * is determined wether the incoming data, the attempt, actually is capable
+     * of representing a real handling event.
+     */
+    final HandlingEvent event = handlingEventFactory.createHandlingEvent(registrationTime,
+                                                                         completionTime,
+                                                                         trackingId,
+                                                                         voyageNumber,
+                                                                         unLocode,
+                                                                         type);
 
-    /* Store the new handling event, which updates the persistent
-       state of the handling event aggregate (but not the cargo aggregate -
-       that happens asynchronously!)
+    /*
+     * Store the new handling event, which updates the persistent state of the
+     * handling event aggregate (but not the cargo aggregate - that happens
+     * asynchronously!)
      */
     handlingEventRepository.store(event);
 

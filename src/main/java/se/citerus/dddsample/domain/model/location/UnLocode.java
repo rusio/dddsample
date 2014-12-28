@@ -27,7 +27,7 @@ public final class UnLocode implements ValueObject<UnLocode> {
   public UnLocode(final String countryAndLocation) {
     Validate.notNull(countryAndLocation, "Country and location may not be null");
     Validate.isTrue(VALID_PATTERN.matcher(countryAndLocation).matches(),
-      countryAndLocation + " is not a valid UN/LOCODE (does not match pattern)");
+                    countryAndLocation + " is not a valid UN/LOCODE (does not match pattern)");
 
     this.unlocode = countryAndLocation.toUpperCase();
   }

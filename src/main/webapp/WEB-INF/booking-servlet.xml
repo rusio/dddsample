@@ -11,7 +11,8 @@
 
   <bean id="remoteBookingService" class="org.springframework.remoting.rmi.RmiProxyFactoryBean">
     <property name="serviceUrl" value="rmi://localhost:1099/BookingService"/>
-    <property name="serviceInterface" value="se.citerus.dddsample.interfaces.booking.facade.BookingServiceFacade"/>
+    <property name="serviceInterface"
+              value="se.citerus.dddsample.interfaces.booking.facade.BookingServiceFacade"/>
   </bean>
 
   <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">

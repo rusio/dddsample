@@ -11,16 +11,16 @@
   <decorator:head/>
 </head>
 <body>
-  <div id="outer">
-    <div id="apptitle">
-      <img src="${rc.contextPath}/images/dddsample_logotype.png" alt="Domain Driven Delivery"/>
-    </div>
-    <div id="body">
-      <decorator:body/>
-    </div>
-    <div id="footer">
-      This application is written by <a href="http://www.citerus.se" target="_blank">Citerus</a>
-      and <a href="http://www.domainlanguage.com" target="_blank">Domain Language</a></div>
+<div id="outer">
+  <div id="apptitle">
+    <img src="${rc.contextPath}/images/dddsample_logotype.png" alt="Domain Driven Delivery"/>
   </div>
+  <div id="body">
+    <decorator:body/>
+  </div>
+  <div id="footer">
+    This application is written by <a href="http://www.citerus.se" target="_blank">Citerus</a>
+    and <a href="http://www.domainlanguage.com" target="_blank">Domain Language</a></div>
+</div>
 </body>
 </html>

@@ -11,17 +11,21 @@
 
   <!-- JMS messaging -->
 
-  <amq:connectionFactory id="jmsConnectionFactory" brokerURL="vm://localhost?broker.persistent=false&amp;broker.useJmx=false"/>
+  <amq:connectionFactory id="jmsConnectionFactory"
+                         brokerURL="vm://localhost?broker.persistent=false&amp;broker.useJmx=false"/>
 
   <amq:queue id="cargoHandledQueue" name="CargoHandledQueue" physicalName="CargoHandledQueue"/>
   <amq:queue id="misdirectedCargoQueue" name="MisdirectedCargoQueue" physicalName="MisdirectedCargoQueue"/>
   <amq:queue id="deliveredCargoQueue" name="DeliveredCargoQueue" physicalName="DeliveredCargoQueue"/>
-  <amq:queue id="handlingEventRegistrationAttemptQueue" name="HandlingEventRegistrationAttemptQueue" physicalName="HandlingEventRegistrationAttemptQueue"/>
-  <amq:queue id="rejectedRegistrationAttemptsQueue" name="RejectedRegistrationAttemptsQueue" physicalName="RejectedRegistrationAttemptsQueue"/>
+  <amq:queue id="handlingEventRegistrationAttemptQueue" name="HandlingEventRegistrationAttemptQueue"
+             physicalName="HandlingEventRegistrationAttemptQueue"/>
+  <amq:queue id="rejectedRegistrationAttemptsQueue" name="RejectedRegistrationAttemptsQueue"
+             physicalName="RejectedRegistrationAttemptsQueue"/>
 
   <jms:listener-container connection-factory="jmsConnectionFactory">
-    <jms:listener destination="CargoHandledQueue" ref="cargoHandledConsumer" />
-    <jms:listener destination="HandlingEventRegistrationAttemptQueue" ref="handlingEventRegistrationAttemptConsumer" />
+    <jms:listener destination="CargoHandledQueue" ref="cargoHandledConsumer"/>
+    <jms:listener destination="HandlingEventRegistrationAttemptQueue"
+                  ref="handlingEventRegistrationAttemptConsumer"/>
     <jms:listener destination="MisdirectedCargoQueue" ref="simpleLoggingConsumer"/>
     <jms:listener destination="DeliveredCargoQueue" ref="simpleLoggingConsumer"/>
     <jms:listener destination="RejectedRegistrationAttemptsQueue" ref="simpleLoggingConsumer"/>
@@ -31,7 +35,8 @@
     <property name="connectionFactory" ref="jmsConnectionFactory"/>
   </bean>
 
-  <bean id="applicationEvents" class="se.citerus.dddsample.infrastructure.messaging.jms.JmsApplicationEventsImpl">
+  <bean id="applicationEvents"
+        class="se.citerus.dddsample.infrastructure.messaging.jms.JmsApplicationEventsImpl">
     <property name="jmsOperations" ref="jmsOperations"/>
     <property name="cargoHandledQueue" ref="cargoHandledQueue"/>
     <property name="misdirectedCargoQueue" ref="misdirectedCargoQueue"/>
@@ -40,14 +45,17 @@
     <property name="handlingEventQueue" ref="handlingEventRegistrationAttemptQueue"/>
   </bean>
 
-  <bean id="cargoHandledConsumer" class="se.citerus.dddsample.infrastructure.messaging.jms.CargoHandledConsumer">
+  <bean id="cargoHandledConsumer"
+        class="se.citerus.dddsample.infrastructure.messaging.jms.CargoHandledConsumer">
     <property name="cargoInspectionService" ref="cargoInspectionService"/>
   </bean>
 
-  <bean id="handlingEventRegistrationAttemptConsumer" class="se.citerus.dddsample.infrastructure.messaging.jms.HandlingEventRegistrationAttemptConsumer">
+  <bean id="handlingEventRegistrationAttemptConsumer"
+        class="se.citerus.dddsample.infrastructure.messaging.jms.HandlingEventRegistrationAttemptConsumer">
     <property name="handlingEventService" ref="handlingEventService"/>
   </bean>
 
-  <bean id="simpleLoggingConsumer" class="se.citerus.dddsample.infrastructure.messaging.jms.SimpleLoggingConsumer"/>
+  <bean id="simpleLoggingConsumer"
+        class="se.citerus.dddsample.infrastructure.messaging.jms.SimpleLoggingConsumer"/>
 
 </beans>

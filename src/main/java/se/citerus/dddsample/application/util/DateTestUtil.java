@@ -26,7 +26,8 @@ public final class DateTestUtil {
   public static Date toDate(final String date, final String time) {
     try {
       return new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(date + " " + time);
-    } catch (ParseException e) {
+    }
+    catch (ParseException e) {
       throw new RuntimeException(e);
     }
   }

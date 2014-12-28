@@ -43,8 +43,10 @@ public final class CargoTrackingController extends SimpleFormController {
   }
 
   @Override
-  protected ModelAndView onSubmit(final HttpServletRequest request, final HttpServletResponse response,
-                                  final Object command, final BindException errors) throws Exception {
+  protected ModelAndView onSubmit(final HttpServletRequest request,
+                                  final HttpServletResponse response,
+                                  final Object command,
+                                  final BindException errors) throws Exception {
 
     final TrackCommand trackCommand = (TrackCommand) command;
     final String trackingIdString = trackCommand.getTrackingId();
@@ -56,10 +58,15 @@ public final class CargoTrackingController extends SimpleFormController {
     if (cargo != null) {
       final MessageSource messageSource = getApplicationContext();
       final Locale locale = RequestContextUtils.getLocale(request);
-      final List<HandlingEvent> handlingEvents = handlingEventRepository.lookupHandlingHistoryOfCargo(trackingId).distinctEventsByCompletionTime();
+      final List<HandlingEvent> handlingEvents = handlingEventRepository.lookupHandlingHistoryOfCargo(trackingId)
+                                                                        .distinctEventsByCompletionTime();
       model.put("cargo", new CargoTrackingViewAdapter(cargo, messageSource, locale, handlingEvents));
-    } else {
-      errors.rejectValue("trackingId", "cargo.unknown_id", new Object[]{trackCommand.getTrackingId()}, "Unknown tracking id");
+    }
+    else {
+      errors.rejectValue("trackingId",
+                         "cargo.unknown_id",
+                         new Object[]{ trackCommand.getTrackingId() },
+                         "Unknown tracking id");
     }
     return showForm(request, response, errors, model);
   }

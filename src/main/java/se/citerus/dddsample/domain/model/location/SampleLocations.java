@@ -34,7 +34,8 @@ public class SampleLocations {
         try {
           Location location = (Location) field.get(null);
           ALL.put(location.unLocode(), location);
-        } catch (IllegalAccessException e) {
+        }
+        catch (IllegalAccessException e) {
           throw new RuntimeException(e);
         }
       }

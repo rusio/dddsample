@@ -1,5 +1,11 @@
 package se.citerus.dddsample.interfaces.handling.ws;
 
+import static se.citerus.dddsample.interfaces.handling.HandlingReportParser.parseCompletionTime;
+import static se.citerus.dddsample.interfaces.handling.HandlingReportParser.parseEventType;
+import static se.citerus.dddsample.interfaces.handling.HandlingReportParser.parseTrackingId;
+import static se.citerus.dddsample.interfaces.handling.HandlingReportParser.parseUnLocode;
+import static se.citerus.dddsample.interfaces.handling.HandlingReportParser.parseVoyageNumber;
+
 import com.aggregator.HandlingReport;
 import com.aggregator.HandlingReportErrors;
 import com.aggregator.HandlingReportErrors_Exception;
@@ -12,7 +18,6 @@ import se.citerus.dddsample.domain.model.handling.HandlingEvent;
 import se.citerus.dddsample.domain.model.location.UnLocode;
 import se.citerus.dddsample.domain.model.voyage.VoyageNumber;
 import se.citerus.dddsample.interfaces.handling.HandlingEventRegistrationAttempt;
-import static se.citerus.dddsample.interfaces.handling.HandlingReportParser.*;
 
 import javax.jws.WebParam;
 import javax.jws.WebService;
@@ -46,12 +51,16 @@ public class HandlingReportServiceImpl implements HandlingReportService {
 
       if (errors.isEmpty()) {
         final Date registrationTime = new Date();
-        final HandlingEventRegistrationAttempt attempt = new HandlingEventRegistrationAttempt(
-          registrationTime, completionTime, trackingId, voyageNumber, type, unLocode
-        );
+        final HandlingEventRegistrationAttempt attempt = new HandlingEventRegistrationAttempt(registrationTime,
+                                                                                              completionTime,
+                                                                                              trackingId,
+                                                                                              voyageNumber,
+                                                                                              type,
+                                                                                              unLocode);
 
         applicationEvents.receivedHandlingEventRegistrationAttempt(attempt);
-      } else {
+      }
+      else {
         logger.error("Parse error in handling report: " + errors);
         final HandlingReportErrors faultInfo = new HandlingReportErrors();
         throw new HandlingReportErrors_Exception(errors.toString(), faultInfo);

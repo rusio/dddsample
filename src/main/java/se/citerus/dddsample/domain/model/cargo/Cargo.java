@@ -61,9 +61,7 @@ public class Cargo implements Entity<Cargo> {
     this.origin = routeSpecification.origin();
     this.routeSpecification = routeSpecification;
 
-    this.delivery = Delivery.derivedFrom(
-      this.routeSpecification, this.itinerary, HandlingHistory.EMPTY
-    );
+    this.delivery = Delivery.derivedFrom(this.routeSpecification, this.itinerary, HandlingHistory.EMPTY);
   }
 
   /**
@@ -102,7 +100,7 @@ public class Cargo implements Entity<Cargo> {
   public RouteSpecification routeSpecification() {
     return routeSpecification;
   }
-  
+
   /**
    * Specifies a new route for this cargo.
    *

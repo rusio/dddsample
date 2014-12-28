@@ -12,10 +12,9 @@ import se.citerus.dddsample.domain.model.voyage.VoyageRepository;
 public final class VoyageRepositoryHibernate extends HibernateRepository implements VoyageRepository {
 
   public Voyage find(final VoyageNumber voyageNumber) {
-    return (Voyage) getSession().
-      createQuery("from Voyage where voyageNumber = :vn").
-      setParameter("vn", voyageNumber).
-      uniqueResult();
+    return (Voyage) getSession().createQuery("from Voyage where voyageNumber = :vn")
+                                .setParameter("vn", voyageNumber)
+                                .uniqueResult();
   }
 
 }

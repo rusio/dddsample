@@ -44,5 +44,4 @@ public class ItinerarySelectionCommandTest extends TestCase {
     assertEquals("XYZ", command.getTrackingId());
   }
 
-
 }

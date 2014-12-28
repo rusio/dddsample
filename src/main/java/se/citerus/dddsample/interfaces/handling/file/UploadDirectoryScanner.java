@@ -1,5 +1,11 @@
 package se.citerus.dddsample.interfaces.handling.file;
 
+import static se.citerus.dddsample.interfaces.handling.HandlingReportParser.parseDate;
+import static se.citerus.dddsample.interfaces.handling.HandlingReportParser.parseEventType;
+import static se.citerus.dddsample.interfaces.handling.HandlingReportParser.parseTrackingId;
+import static se.citerus.dddsample.interfaces.handling.HandlingReportParser.parseUnLocode;
+import static se.citerus.dddsample.interfaces.handling.HandlingReportParser.parseVoyageNumber;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -10,7 +16,6 @@ import se.citerus.dddsample.domain.model.handling.HandlingEvent;
 import se.citerus.dddsample.domain.model.location.UnLocode;
 import se.citerus.dddsample.domain.model.voyage.VoyageNumber;
 import se.citerus.dddsample.interfaces.handling.HandlingEventRegistrationAttempt;
-import static se.citerus.dddsample.interfaces.handling.HandlingReportParser.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -41,7 +46,8 @@ public class UploadDirectoryScanner extends TimerTask implements InitializingBea
         parse(file);
         delete(file);
         logger.info("Import of " + file.getName() + " complete");
-      } catch (Exception e) {
+      }
+      catch (Exception e) {
         logger.error(e, e);
         move(file);
       }
@@ -54,7 +60,8 @@ public class UploadDirectoryScanner extends TimerTask implements InitializingBea
     for (String line : lines) {
       try {
         parseLine(line);
-      } catch (Exception e) {
+      }
+      catch (Exception e) {
         logger.error("Rejected line \n" + line + "\nReason is: " + e);
         rejectedLines.add(line);
       }
@@ -69,23 +76,27 @@ public class UploadDirectoryScanner extends TimerTask implements InitializingBea
   }
 
   private void writeRejectedLinesToFile(final String filename, final List<String> rejectedLines) throws IOException {
-    FileUtils.writeLines(
-      new File(parseFailureDirectory, filename), rejectedLines
-    );
+    FileUtils.writeLines(new File(parseFailureDirectory, filename), rejectedLines);
   }
 
   private void parseLine(final String line) throws Exception {
     final String[] columns = line.split("\t");
     if (columns.length == 5) {
       queueAttempt(columns[0], columns[1], columns[2], columns[3], columns[4]);
-    } else if (columns.length == 4) {
+    }
+    else if (columns.length == 4) {
       queueAttempt(columns[0], columns[1], "", columns[2], columns[3]);
-    } else {
+    }
+    else {
       throw new IllegalArgumentException("Wrong number of columns on line: " + line + ", must be 4 or 5");
     }
   }
 
-  private void queueAttempt(String completionTimeStr, String trackingIdStr, String voyageNumberStr, String unLocodeStr, String eventTypeStr) throws Exception {
+  private void queueAttempt(String completionTimeStr,
+                            String trackingIdStr,
+                            String voyageNumberStr,
+                            String unLocodeStr,
+                            String eventTypeStr) throws Exception {
     final List<String> errors = new ArrayList<String>();
 
     final Date date = parseDate(completionTimeStr, errors);
@@ -95,9 +106,15 @@ public class UploadDirectoryScanner extends TimerTask implements InitializingBea
     final UnLocode unLocode = parseUnLocode(unLocodeStr, errors);
 
     if (errors.isEmpty()) {
-      final HandlingEventRegistrationAttempt attempt = new HandlingEventRegistrationAttempt(new Date(), date, trackingId, voyageNumber, eventType, unLocode);
+      final HandlingEventRegistrationAttempt attempt = new HandlingEventRegistrationAttempt(new Date(),
+                                                                                            date,
+                                                                                            trackingId,
+                                                                                            voyageNumber,
+                                                                                            eventType,
+                                                                                            unLocode);
       applicationEvents.receivedHandlingEventRegistrationAttempt(attempt);
-    } else {
+    }
+    else {
       throw new Exception(errors.toString());
     }
   }
@@ -119,7 +136,8 @@ public class UploadDirectoryScanner extends TimerTask implements InitializingBea
   @Override
   public void afterPropertiesSet() throws Exception {
     if (uploadDirectory.equals(parseFailureDirectory)) {
-      throw new Exception("Upload and parse failed directories must not be the same directory: " + uploadDirectory);
+      throw new Exception("Upload and parse failed directories must not be the same directory: "
+                          + uploadDirectory);
     }
     if (!uploadDirectory.exists()) {
       uploadDirectory.mkdirs();

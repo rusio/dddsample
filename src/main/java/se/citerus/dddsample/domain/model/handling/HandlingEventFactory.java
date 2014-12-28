@@ -41,8 +41,12 @@ public class HandlingEventFactory {
    * @throws UnknownLocationException if there's no location with this UN Locode
    * @return A handling event.
    */
-  public HandlingEvent createHandlingEvent(Date registrationTime, Date completionTime, TrackingId trackingId, VoyageNumber voyageNumber, UnLocode unlocode, HandlingEvent.Type type)
-    throws CannotCreateHandlingEventException {
+  public HandlingEvent createHandlingEvent(Date registrationTime,
+                                           Date completionTime,
+                                           TrackingId trackingId,
+                                           VoyageNumber voyageNumber,
+                                           UnLocode unlocode,
+                                           HandlingEvent.Type type) throws CannotCreateHandlingEventException {
     final Cargo cargo = findCargo(trackingId);
     final Voyage voyage = findVoyage(voyageNumber);
     final Location location = findLocation(unlocode);
@@ -50,10 +54,12 @@ public class HandlingEventFactory {
     try {
       if (voyage == null) {
         return new HandlingEvent(cargo, completionTime, registrationTime, type, location);
-      } else {
+      }
+      else {
         return new HandlingEvent(cargo, completionTime, registrationTime, type, location, voyage);
       }
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
       throw new CannotCreateHandlingEventException(e);
     }
   }
@@ -76,7 +82,7 @@ public class HandlingEventFactory {
 
     return voyage;
   }
-  
+
   private Location findLocation(final UnLocode unlocode) throws UnknownLocationException {
     final Location location = locationRepository.find(unlocode);
     if (location == null) {

@@ -21,14 +21,15 @@ public class CargoHandledConsumer implements MessageListener {
   private CargoInspectionService cargoInspectionService;
   private final Log logger = LogFactory.getLog(getClass());
 
-  @Override  
+  @Override
   public void onMessage(final Message message) {
     try {
       final TextMessage textMessage = (TextMessage) message;
       final String trackingidString = textMessage.getText();
-      
+
       cargoInspectionService.inspectCargo(new TrackingId(trackingidString));
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
       logger.error(e, e);
     }
   }

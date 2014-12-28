@@ -1,5 +1,9 @@
 package se.citerus.dddsample.interfaces.tracking;
 
+import static se.citerus.dddsample.domain.model.location.SampleLocations.HANGZOU;
+import static se.citerus.dddsample.domain.model.location.SampleLocations.HELSINKI;
+import static se.citerus.dddsample.domain.model.voyage.SampleVoyages.CM001;
+
 import junit.framework.TestCase;
 import org.springframework.context.support.StaticApplicationContext;
 import se.citerus.dddsample.domain.model.cargo.Cargo;
@@ -7,11 +11,12 @@ import se.citerus.dddsample.domain.model.cargo.RouteSpecification;
 import se.citerus.dddsample.domain.model.cargo.TrackingId;
 import se.citerus.dddsample.domain.model.handling.HandlingEvent;
 import se.citerus.dddsample.domain.model.handling.HandlingHistory;
-import static se.citerus.dddsample.domain.model.location.SampleLocations.HANGZOU;
-import static se.citerus.dddsample.domain.model.location.SampleLocations.HELSINKI;
-import static se.citerus.dddsample.domain.model.voyage.SampleVoyages.CM001;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
 
 public class CargoTrackingViewAdapterTest extends TestCase {
 
@@ -30,7 +35,10 @@ public class CargoTrackingViewAdapterTest extends TestCase {
     applicationContext.addMessage("cargo.status.IN_PORT", Locale.GERMAN, "In port {0}");
     applicationContext.refresh();
 
-    CargoTrackingViewAdapter adapter = new CargoTrackingViewAdapter(cargo, applicationContext, Locale.GERMAN, events);
+    CargoTrackingViewAdapter adapter = new CargoTrackingViewAdapter(cargo,
+                                                                    applicationContext,
+                                                                    Locale.GERMAN,
+                                                                    events);
 
     assertEquals("XYZ", adapter.getTrackingId());
     assertEquals("Hangzhou", adapter.getOrigin());

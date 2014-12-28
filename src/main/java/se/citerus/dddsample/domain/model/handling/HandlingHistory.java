@@ -1,10 +1,16 @@
 package se.citerus.dddsample.domain.model.handling;
 
+import static java.util.Collections.sort;
+
 import org.apache.commons.lang.Validate;
 import se.citerus.dddsample.domain.shared.ValueObject;
 
-import java.util.*;
-import static java.util.Collections.sort;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
 
 /**
  * The handling history of a cargo.
@@ -14,7 +20,7 @@ public class HandlingHistory implements ValueObject<HandlingHistory> {
 
   private final List<HandlingEvent> handlingEvents;
 
-  public static final HandlingHistory EMPTY = new HandlingHistory(Collections.<HandlingEvent>emptyList());
+  public static final HandlingHistory EMPTY = new HandlingHistory(Collections.<HandlingEvent> emptyList());
 
   public HandlingHistory(Collection<HandlingEvent> handlingEvents) {
     Validate.notNull(handlingEvents, "Handling events are required");
@@ -26,9 +32,7 @@ public class HandlingHistory implements ValueObject<HandlingHistory> {
    * @return A distinct list (no duplicate registrations) of handling events, ordered by completion time.
    */
   public List<HandlingEvent> distinctEventsByCompletionTime() {
-    final List<HandlingEvent> ordered = new ArrayList<HandlingEvent>(
-      new HashSet<HandlingEvent>(handlingEvents)
-    );
+    final List<HandlingEvent> ordered = new ArrayList<HandlingEvent>(new HashSet<HandlingEvent>(handlingEvents));
     sort(ordered, BY_COMPLETION_TIME_COMPARATOR);
     return Collections.unmodifiableList(ordered);
   }
@@ -40,7 +44,8 @@ public class HandlingHistory implements ValueObject<HandlingHistory> {
     final List<HandlingEvent> distinctEvents = distinctEventsByCompletionTime();
     if (distinctEvents.isEmpty()) {
       return null;
-    } else {
+    }
+    else {
       return distinctEvents.get(distinctEvents.size() - 1);
     }
   }
@@ -64,11 +69,10 @@ public class HandlingHistory implements ValueObject<HandlingHistory> {
     return handlingEvents.hashCode();
   }
 
-  private static final Comparator<HandlingEvent> BY_COMPLETION_TIME_COMPARATOR =
-    new Comparator<HandlingEvent>() {
-      public int compare(final HandlingEvent he1, final HandlingEvent he2) {
-        return he1.completionTime().compareTo(he2.completionTime());
-      }
-    };
+  private static final Comparator<HandlingEvent> BY_COMPLETION_TIME_COMPARATOR = new Comparator<HandlingEvent>() {
+    public int compare(final HandlingEvent he1, final HandlingEvent he2) {
+      return he1.completionTime().compareTo(he2.completionTime());
+    }
+  };
 
 }

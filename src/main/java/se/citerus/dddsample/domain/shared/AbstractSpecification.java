@@ -1,6 +1,5 @@
 package se.citerus.dddsample.domain.shared;
 
-
 /**
  * Abstract base implementation of composite {@link Specification} with default
  * implementations for {@code and}, {@code or} and {@code not}.

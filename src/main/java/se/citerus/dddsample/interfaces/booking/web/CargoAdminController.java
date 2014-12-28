@@ -12,7 +12,11 @@ import se.citerus.dddsample.interfaces.booking.facade.dto.RouteCandidateDTO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Handles cargo booking and routing. Operates against a dedicated remoting service facade,
@@ -33,7 +37,8 @@ public final class CargoAdminController extends MultiActionController {
   @Override
   protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
     super.initBinder(request, binder);
-    binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("yyyy-MM-dd HH:mm"), false));
+    binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("yyyy-MM-dd HH:mm"),
+                                                                 false));
   }
 
   public Map registrationForm(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -51,12 +56,11 @@ public final class CargoAdminController extends MultiActionController {
     return map;
   }
 
-  public void register(HttpServletRequest request, HttpServletResponse response,
-                       RegistrationCommand command) throws Exception {
+  public void register(HttpServletRequest request, HttpServletResponse response, RegistrationCommand command) throws Exception {
     Date arrivalDeadline = new SimpleDateFormat("M/dd/yyyy").parse(command.getArrivalDeadline());
-    String trackingId = bookingServiceFacade.bookNewCargo(
-      command.getOriginUnlocode(), command.getDestinationUnlocode(), arrivalDeadline
-    );
+    String trackingId = bookingServiceFacade.bookNewCargo(command.getOriginUnlocode(),
+                                                          command.getDestinationUnlocode(),
+                                                          arrivalDeadline);
     response.sendRedirect("show.html?trackingId=" + trackingId);
   }
 
@@ -89,16 +93,16 @@ public final class CargoAdminController extends MultiActionController {
     return map;
   }
 
-  public void assignItinerary(HttpServletRequest request, HttpServletResponse response, RouteAssignmentCommand command) throws Exception {
+  public void assignItinerary(HttpServletRequest request,
+                              HttpServletResponse response,
+                              RouteAssignmentCommand command) throws Exception {
     List<LegDTO> legDTOs = new ArrayList<LegDTO>(command.getLegs().size());
     for (RouteAssignmentCommand.LegCommand leg : command.getLegs()) {
-      legDTOs.add(new LegDTO(
-        leg.getVoyageNumber(),
-        leg.getFromUnLocode(),
-        leg.getToUnLocode(),
-        leg.getFromDate(),
-        leg.getToDate())
-      );
+      legDTOs.add(new LegDTO(leg.getVoyageNumber(),
+                             leg.getFromUnLocode(),
+                             leg.getToUnLocode(),
+                             leg.getFromDate(),
+                             leg.getToDate()));
     }
 
     RouteCandidateDTO selectedRoute = new RouteCandidateDTO(legDTOs);

@@ -41,7 +41,8 @@ public final class HandlingEvent implements DomainEvent<HandlingEvent> {
    * Handling event type. Either requires or prohibits a carrier movement
    * association, it's never optional.
    */
-  public enum Type implements ValueObject<Type> {
+  public enum Type
+      implements ValueObject<Type> {
     LOAD(true),
     UNLOAD(true),
     RECEIVE(false),
@@ -179,35 +180,43 @@ public final class HandlingEvent implements DomainEvent<HandlingEvent> {
 
   @Override
   public boolean sameEventAs(final HandlingEvent other) {
-    return other != null && new EqualsBuilder().
-      append(this.cargo, other.cargo).
-      append(this.voyage, other.voyage).
-      append(this.completionTime, other.completionTime).
-      append(this.location, other.location).
-      append(this.type, other.type).
-      isEquals();
+    return other != null
+           && new EqualsBuilder().append(this.cargo, other.cargo)
+                                 .append(this.voyage, other.voyage)
+                                 .append(this.completionTime, other.completionTime)
+                                 .append(this.location, other.location)
+                                 .append(this.type, other.type)
+                                 .isEquals();
   }
 
   @Override
   public int hashCode() {
-    return new HashCodeBuilder().
-      append(cargo).
-      append(voyage).
-      append(completionTime).
-      append(location).
-      append(type).
-      toHashCode();
+    return new HashCodeBuilder().append(cargo)
+                                .append(voyage)
+                                .append(completionTime)
+                                .append(location)
+                                .append(type)
+                                .toHashCode();
   }
 
   @Override
   public String toString() {
-    final StringBuilder builder = new StringBuilder("\n--- Handling event ---\n").
-      append("Cargo: ").append(cargo.trackingId()).append("\n").
-      append("Type: ").append(type).append("\n").
-      append("Location: ").append(location.name()).append("\n").
-      append("Completed on: ").append(completionTime).append("\n").
-      append("Registered on: ").append(registrationTime).append("\n");
-    
+    final StringBuilder builder = new StringBuilder("\n--- Handling event ---\n").append("Cargo: ")
+                                                                                 .append(cargo.trackingId())
+                                                                                 .append("\n")
+                                                                                 .append("Type: ")
+                                                                                 .append(type)
+                                                                                 .append("\n")
+                                                                                 .append("Location: ")
+                                                                                 .append(location.name())
+                                                                                 .append("\n")
+                                                                                 .append("Completed on: ")
+                                                                                 .append(completionTime)
+                                                                                 .append("\n")
+                                                                                 .append("Registered on: ")
+                                                                                 .append(registrationTime)
+                                                                                 .append("\n");
+
     if (voyage != null) {
       builder.append("Voyage: ").append(voyage.voyageNumber()).append("\n");
     }
@@ -218,7 +227,6 @@ public final class HandlingEvent implements DomainEvent<HandlingEvent> {
   HandlingEvent() {
     // Needed by Hibernate
   }
-
 
   // Auto-generated surrogate key
   private Long id;

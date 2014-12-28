@@ -47,7 +47,7 @@ public abstract class AbstractRepositoryTest extends AbstractTransactionalDataSo
 
   @Override
   protected String[] getConfigLocations() {
-    return new String[] {"/context-infrastructure-persistence.xml", "context-domain.xml"};
+    return new String[]{ "/context-infrastructure-persistence.xml", "context-domain.xml" };
   }
 
   @Override
@@ -65,12 +65,14 @@ public abstract class AbstractRepositoryTest extends AbstractTransactionalDataSo
   protected Long getLongId(Object o) {
     if (getSession().contains(o)) {
       return (Long) getSession().getIdentifier(o);
-    } else {
+    }
+    else {
       try {
         Field id = o.getClass().getDeclaredField("id");
         id.setAccessible(true);
         return (Long) id.get(o);
-      } catch (Exception e) {
+      }
+      catch (Exception e) {
         throw new RuntimeException(e);
       }
     }

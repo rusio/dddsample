@@ -59,9 +59,8 @@ public class Itinerary implements ValueObject<Itinerary> {
     if (event.type() == HandlingEvent.Type.LOAD) {
       //Check that the there is one leg with same load location and voyage
       for (Leg leg : legs) {
-        if (leg.loadLocation().sameIdentityAs(event.location()) &&
-            leg.voyage().sameIdentityAs(event.voyage()))
-          return true;
+        if (leg.loadLocation().sameIdentityAs(event.location())
+            && leg.voyage().sameIdentityAs(event.voyage())) return true;
       }
       return false;
     }
@@ -69,8 +68,7 @@ public class Itinerary implements ValueObject<Itinerary> {
     if (event.type() == HandlingEvent.Type.UNLOAD) {
       //Check that the there is one leg with same unload location and voyage
       for (Leg leg : legs) {
-        if (leg.unloadLocation().equals(event.location()) &&
-            leg.voyage().equals(event.voyage()))
+        if (leg.unloadLocation().equals(event.location()) && leg.voyage().equals(event.voyage()))
           return true;
       }
       return false;
@@ -90,11 +88,12 @@ public class Itinerary implements ValueObject<Itinerary> {
    * @return The initial departure location.
    */
   Location initialDepartureLocation() {
-     if (legs.isEmpty()) {
-       return Location.UNKNOWN;
-     } else {
-       return legs.get(0).loadLocation();
-     }
+    if (legs.isEmpty()) {
+      return Location.UNKNOWN;
+    }
+    else {
+      return legs.get(0).loadLocation();
+    }
   }
 
   /**
@@ -103,7 +102,8 @@ public class Itinerary implements ValueObject<Itinerary> {
   Location finalArrivalLocation() {
     if (legs.isEmpty()) {
       return Location.UNKNOWN;
-    } else {
+    }
+    else {
       return lastLeg().unloadLocation();
     }
   }
@@ -116,7 +116,8 @@ public class Itinerary implements ValueObject<Itinerary> {
 
     if (lastLeg == null) {
       return new Date(END_OF_DAYS.getTime());
-    } else {
+    }
+    else {
       return new Date(lastLeg.unloadTime().getTime());
     }
   }
@@ -127,7 +128,8 @@ public class Itinerary implements ValueObject<Itinerary> {
   Leg lastLeg() {
     if (legs.isEmpty()) {
       return null;
-    } else {
+    }
+    else {
       return legs.get(legs.size() - 1);
     }
   }

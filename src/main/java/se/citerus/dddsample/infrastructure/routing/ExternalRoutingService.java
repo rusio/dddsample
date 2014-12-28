@@ -36,7 +36,7 @@ public class ExternalRoutingService implements RoutingService {
 
   public List<Itinerary> fetchRoutesForSpecification(RouteSpecification routeSpecification) {
     /*
-      The RouteSpecification is picked apart and adapted to the external API.
+     * The RouteSpecification is picked apart and adapted to the external API.
      */
     final Location origin = routeSpecification.origin();
     final Location destination = routeSpecification.destination();
@@ -46,19 +46,18 @@ public class ExternalRoutingService implements RoutingService {
 
     final List<TransitPath> transitPaths;
     try {
-      transitPaths = graphTraversalService.findShortestPath(
-      origin.unLocode().idString(),
-      destination.unLocode().idString(),
-      limitations
-    );
-    } catch (RemoteException e) {
+      transitPaths = graphTraversalService.findShortestPath(origin.unLocode().idString(),
+                                                            destination.unLocode().idString(),
+                                                            limitations);
+    }
+    catch (RemoteException e) {
       log.error(e, e);
       return Collections.EMPTY_LIST;
     }
 
     /*
-     The returned result is then translated back into our domain model.
-    */
+     * The returned result is then translated back into our domain model.
+     */
     final List<Itinerary> itineraries = new ArrayList<Itinerary>();
 
     for (TransitPath transitPath : transitPaths) {
@@ -66,7 +65,8 @@ public class ExternalRoutingService implements RoutingService {
       // Use the specification to safe-guard against invalid itineraries
       if (routeSpecification.isSatisfiedBy(itinerary)) {
         itineraries.add(itinerary);
-      } else {
+      }
+      else {
         log.warn("Received itinerary that did not satisfy the route specification");
       }
     }
@@ -83,12 +83,11 @@ public class ExternalRoutingService implements RoutingService {
   }
 
   private Leg toLeg(TransitEdge edge) {
-    return new Leg(
-      voyageRepository.find(new VoyageNumber(edge.getVoyageNumber())),
-      locationRepository.find(new UnLocode(edge.getFromUnLocode())),
-      locationRepository.find(new UnLocode(edge.getToUnLocode())),
-      edge.getFromDate(), edge.getToDate()
-    );
+    return new Leg(voyageRepository.find(new VoyageNumber(edge.getVoyageNumber())),
+                   locationRepository.find(new UnLocode(edge.getFromUnLocode())),
+                   locationRepository.find(new UnLocode(edge.getToUnLocode())),
+                   edge.getFromDate(),
+                   edge.getToDate());
   }
 
   public void setGraphTraversalService(GraphTraversalService graphTraversalService) {
@@ -102,5 +101,5 @@ public class ExternalRoutingService implements RoutingService {
   public void setVoyageRepository(VoyageRepository voyageRepository) {
     this.voyageRepository = voyageRepository;
   }
-  
+
 }

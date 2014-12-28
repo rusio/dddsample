@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
 /**
  * This implementation has additional support from the infrastructure, for exposing as an RMI
  * service and for keeping the OR-mapper unit-of-work open during DTO assembly,
@@ -47,11 +46,9 @@ public class BookingServiceFacadeImpl implements BookingServiceFacade {
 
   @Override
   public String bookNewCargo(String origin, String destination, Date arrivalDeadline) {
-    TrackingId trackingId = bookingService.bookNewCargo(
-      new UnLocode(origin), 
-      new UnLocode(destination),
-      arrivalDeadline
-    );
+    TrackingId trackingId = bookingService.bookNewCargo(new UnLocode(origin),
+                                                        new UnLocode(destination),
+                                                        arrivalDeadline);
     return trackingId.idString();
   }
 
@@ -64,7 +61,9 @@ public class BookingServiceFacadeImpl implements BookingServiceFacade {
 
   @Override
   public void assignCargoToRoute(String trackingIdStr, RouteCandidateDTO routeCandidateDTO) {
-    final Itinerary itinerary = new ItineraryCandidateDTOAssembler().fromDTO(routeCandidateDTO, voyageRepository, locationRepository);
+    final Itinerary itinerary = new ItineraryCandidateDTOAssembler().fromDTO(routeCandidateDTO,
+                                                                             voyageRepository,
+                                                                             locationRepository);
     final TrackingId trackingId = new TrackingId(trackingIdStr);
 
     bookingService.assignCargoToRoute(itinerary, trackingId);
