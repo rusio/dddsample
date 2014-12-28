@@ -4,7 +4,6 @@ import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import se.citerus.dddsample.domain.model.location.Location;
-import se.citerus.dddsample.domain.shared.AbstractSpecification;
 import se.citerus.dddsample.domain.shared.ValueObject;
 
 import java.util.Date;
@@ -14,7 +13,7 @@ import java.util.Date;
  * and the arrival deadline.
  * 
  */
-public class RouteSpecification extends AbstractSpecification<Itinerary> implements ValueObject<RouteSpecification> {
+public class RouteSpecification implements ValueObject<RouteSpecification> {
 
   private Location origin;
   private Location destination;
@@ -58,7 +57,6 @@ public class RouteSpecification extends AbstractSpecification<Itinerary> impleme
     return new Date(arrivalDeadline.getTime());
   }
 
-  @Override
   public boolean isSatisfiedBy(final Itinerary itinerary) {
     return itinerary != null && origin().sameIdentityAs(itinerary.initialDepartureLocation())
            && destination().sameIdentityAs(itinerary.finalArrivalLocation())
