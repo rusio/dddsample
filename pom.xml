@@ -4,7 +4,7 @@
   <groupId>se.citerus</groupId>
   <artifactId>dddsample</artifactId>
   <packaging>war</packaging>
-  <name>DDDSample</name>
+  <name>DDD Sample Redux</name>
   <version>1.1.1-SNAPSHOT</version>
   <description>This application shows a few key concepts of
     Domain Driven Design implemented in Enterprise Java.
