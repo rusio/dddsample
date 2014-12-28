@@ -1,6 +1,6 @@
 <project name="DDD Sample Application">
   <bannerLeft>
-    <name>DDDSample</name>
+    <name>DDD Sample Redux</name>
     <src>images/banner-left.png</src>
     <href>http://dddsample.sf.net</href>
   </bannerLeft>

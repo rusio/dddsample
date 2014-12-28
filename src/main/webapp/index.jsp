@@ -6,12 +6,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-  <title>DDDSample</title>
+  <title>DDD Sample Redux</title>
 </head>
 <body style="padding: 20px">
 <p><img src="images/web_logo.png"/></p>
 
-<p>Welcome to the <strong>DDDSample</strong> application.</p>
+<p>Welcome to the <strong>DDD Sample Redux</strong> application.</p>
 
 <p>There are two web interfaces available:</p>
 <ul>
