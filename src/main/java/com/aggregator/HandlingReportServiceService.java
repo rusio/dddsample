@@ -43,9 +43,8 @@ public class HandlingReportServiceService extends Service {
    */
   @WebEndpoint(name = "HandlingReportServicePort")
   public HandlingReportService getHandlingReportServicePort() {
-    return (HandlingReportService) super.getPort(new QName("http://ws.handling.interfaces.dddsample.citerus.se/",
-                                                           "HandlingReportServicePort"),
-                                                 HandlingReportService.class);
+    return super.getPort(new QName("http://ws.handling.interfaces.dddsample.citerus.se/",
+                                   "HandlingReportServicePort"), HandlingReportService.class);
   }
 
   /**
@@ -54,10 +53,8 @@ public class HandlingReportServiceService extends Service {
    */
   @WebEndpoint(name = "HandlingReportServicePort")
   public HandlingReportService getHandlingReportServicePort(WebServiceFeature... features) {
-    return (HandlingReportService) super.getPort(new QName("http://ws.handling.interfaces.dddsample.citerus.se/",
-                                                           "HandlingReportServicePort"),
-                                                 HandlingReportService.class,
-                                                 features);
+    return super.getPort(new QName("http://ws.handling.interfaces.dddsample.citerus.se/",
+                                   "HandlingReportServicePort"), HandlingReportService.class, features);
   }
 
 }

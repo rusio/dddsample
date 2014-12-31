@@ -181,13 +181,13 @@ public class SampleDataGenerator implements ServletContextListener {
 
   public void contextInitialized(ServletContextEvent event) {
     WebApplicationContext context = WebApplicationContextUtils.getRequiredWebApplicationContext(event.getServletContext());
-    DataSource dataSource = (DataSource) BeanFactoryUtils.beanOfType(context, DataSource.class);
-    PlatformTransactionManager transactionManager = (PlatformTransactionManager) BeanFactoryUtils.beanOfType(context,
-                                                                                                             PlatformTransactionManager.class);
+    DataSource dataSource = BeanFactoryUtils.beanOfType(context, DataSource.class);
+    PlatformTransactionManager transactionManager = BeanFactoryUtils.beanOfType(context,
+                                                                                PlatformTransactionManager.class);
     TransactionTemplate tt = new TransactionTemplate(transactionManager);
     //loadSampleData(new JdbcTemplate(dataSource), tt);
 
-    SessionFactory sf = (SessionFactory) BeanFactoryUtils.beanOfType(context, SessionFactory.class);
+    SessionFactory sf = BeanFactoryUtils.beanOfType(context, SessionFactory.class);
     HandlingEventFactory handlingEventFactory = new HandlingEventFactory(getBean(context,
                                                                                  CargoRepository.class),
                                                                          getBean(context,
@@ -198,7 +198,7 @@ public class SampleDataGenerator implements ServletContextListener {
   }
 
   private <T> T getBean(WebApplicationContext context, Class<T> cls) {
-    return (T) BeanFactoryUtils.beanOfType(context, cls);
+    return BeanFactoryUtils.beanOfType(context, cls);
   }
 
   public static void loadHibernateData(TransactionTemplate tt,
