@@ -9,7 +9,7 @@ import se.citerus.dddsample.domain.shared.ValueObject;
 import java.util.Date;
 
 /**
- * Route specification. Describes where a cargo orign and destination is,
+ * Route specification. Describes where a cargo origin and destination is,
  * and the arrival deadline.
  * 
  */
@@ -44,7 +44,7 @@ public class RouteSpecification implements ValueObject<RouteSpecification> {
   }
 
   /**
-   * @return Specfied destination location.
+   * @return Specified destination location.
    */
   public Location destination() {
     return destination;

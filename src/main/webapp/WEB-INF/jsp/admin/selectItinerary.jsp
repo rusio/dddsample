@@ -15,7 +15,7 @@
   <c:url value="/admin/assignItinerary.html" var="postUrl"/>
   <c:if test="${empty routeCandidates}">
     <p>No routes found that satisfy the route specification.
-      Try setting an arrival deadline futher into the future (a few weeks at least).
+      Try setting an arrival deadline further into the future (a few weeks at least).
     </p>
   </c:if>
 

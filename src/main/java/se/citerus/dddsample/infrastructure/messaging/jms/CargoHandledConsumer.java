@@ -25,9 +25,9 @@ public class CargoHandledConsumer implements MessageListener {
   public void onMessage(final Message message) {
     try {
       final TextMessage textMessage = (TextMessage) message;
-      final String trackingidString = textMessage.getText();
+      final String trackingIdString = textMessage.getText();
 
-      cargoInspectionService.inspectCargo(new TrackingId(trackingidString));
+      cargoInspectionService.inspectCargo(new TrackingId(trackingIdString));
     }
     catch (Exception e) {
       logger.error(e, e);

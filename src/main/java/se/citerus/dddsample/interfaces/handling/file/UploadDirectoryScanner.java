@@ -29,7 +29,7 @@ import java.util.TimerTask;
  * to parse handling event registrations from the contents.
  * <p/>
  * Files that fail to parse are moved into a separate directory,
- * succesful files are deleted.
+ * successful files are deleted.
  */
 public class UploadDirectoryScanner extends TimerTask implements InitializingBean {
 

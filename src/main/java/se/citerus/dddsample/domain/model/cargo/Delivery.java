@@ -40,7 +40,7 @@ public class Delivery implements ValueObject<Delivery> {
   private Date calculatedAt;
   private HandlingEvent lastEvent;
 
-  private static final Date ETA_UNKOWN = null;
+  private static final Date ETA_UNKNOWN = null;
   private static final HandlingActivity NO_ACTIVITY = null;
 
   /**
@@ -139,11 +139,11 @@ public class Delivery implements ValueObject<Delivery> {
    * @return Estimated time of arrival
    */
   public Date estimatedTimeOfArrival() {
-    if (eta != ETA_UNKOWN) {
+    if (eta != ETA_UNKNOWN) {
       return new Date(eta.getTime());
     }
     else {
-      return ETA_UNKOWN;
+      return ETA_UNKNOWN;
     }
   }
 
@@ -230,7 +230,7 @@ public class Delivery implements ValueObject<Delivery> {
       return itinerary.finalArrivalDate();
     }
     else {
-      return ETA_UNKOWN;
+      return ETA_UNKNOWN;
     }
   }
 

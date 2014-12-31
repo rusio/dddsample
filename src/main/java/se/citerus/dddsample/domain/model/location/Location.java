@@ -51,7 +51,7 @@ public final class Location implements Entity<Location> {
 
   /**
    * @param object to compare
-   * @return Since this is an entiy this will be true iff UN locodes are equal.
+   * @return Since this is an entity this will be true if UN locodes are equal.
    */
   @Override
   public boolean equals(final Object object) {

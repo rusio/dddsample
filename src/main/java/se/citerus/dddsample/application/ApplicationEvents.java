@@ -35,7 +35,7 @@ public interface ApplicationEvents {
   void cargoHasArrived(Cargo cargo);
 
   /**
-   * A handling event regitration attempt is received.
+   * A handling event registration attempt is received.
    *
    * @param attempt handling event registration attempt
    */

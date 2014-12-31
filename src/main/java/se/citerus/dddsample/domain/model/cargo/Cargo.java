@@ -37,7 +37,7 @@ import se.citerus.dddsample.domain.shared.Entity;
  *
  * The life cycle of a cargo ends when the cargo is claimed by the customer.
  *
- * The cargo aggregate, and the entre domain model, is built to solve the problem
+ * The cargo aggregate, and the entire domain model, is built to solve the problem
  * of booking and tracking cargo. All important business rules for determining whether
  * or not a cargo is misdirected, what the current status of the cargo is (on board carrier,
  * in port etc), are captured in this aggregate.
@@ -57,7 +57,7 @@ public class Cargo implements Entity<Cargo> {
 
     this.trackingId = trackingId;
     // Cargo origin never changes, even if the route specification changes.
-    // However, at creation, cargo orgin can be derived from the initial route specification.
+    // However, at creation, cargo origin can be derived from the initial route specification.
     this.origin = routeSpecification.origin();
     this.routeSpecification = routeSpecification;
 

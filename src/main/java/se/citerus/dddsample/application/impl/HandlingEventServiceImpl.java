@@ -40,7 +40,7 @@ public final class HandlingEventServiceImpl implements HandlingEventService {
     final Date registrationTime = new Date();
     /*
      * Using a factory to create a HandlingEvent (aggregate). This is where it
-     * is determined wether the incoming data, the attempt, actually is capable
+     * is determined whether the incoming data, the attempt, actually is capable
      * of representing a real handling event.
      */
     final HandlingEvent event = handlingEventFactory.createHandlingEvent(registrationTime,
